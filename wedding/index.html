@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nunta Diana &amp; Cristi — 19 Iunie 2027</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #f3f7f0;
+      --light:    #e6efe0;
+      --sage:     #8aad82;
+      --moss:     #4d8558;
+      --forest:   #2a5c35;
+      --dark:     #192e1d;
+      --olive:    #7a9560;
+      --mint:     #b8dfb0;
+      --text:     #2d3d2a;
+      --white:    #ffffff;
+      --ff-head:  'Cormorant Garamond', Georgia, serif;
+      --ff-body:  'Lato', 'Helvetica Neue', sans-serif;
+      --leaf-url: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M50 15 Q75 28 72 55 Q69 82 50 87 Q31 82 28 55 Q25 28 50 15Z' fill='none' stroke='%234d8558' stroke-width='1' opacity='0.15'/%3E%3Cpath d='M50 15 L50 87' fill='none' stroke='%234d8558' stroke-width='0.6' opacity='0.1'/%3E%3C/svg%3E");
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--ff-body);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    h1, h2, h3 { font-family: var(--ff-head); font-weight: 400; line-height: 1.2; }
+
+    .section-label {
+      display: block;
+      font-family: var(--ff-body);
+      font-size: .7rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--moss);
+      margin-bottom: .6rem;
+    }
+
+    /* ── Language switch ─────────────────────────────────── */
+    #langSwitch {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      background: rgba(255,255,255,.92);
+      border-radius: 100px;
+      padding: .32rem .7rem;
+      box-shadow: 0 2px 14px rgba(0,0,0,.13);
+      backdrop-filter: blur(10px);
+      font-family: var(--ff-body);
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      color: var(--forest);
+      user-select: none;
+    }
+
+    .lang-lbl { cursor: pointer; transition: opacity .2s; }
+    .lang-lbl.dim { opacity: .32; }
+
+    .sw-track {
+      position: relative;
+      width: 36px; height: 20px;
+      background: var(--moss);
+      border-radius: 20px;
+      cursor: pointer;
+      border: none;
+      padding: 0;
+      transition: background .3s;
+      flex-shrink: 0;
+    }
+    .sw-thumb {
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 14px; height: 14px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform .3s cubic-bezier(.4,0,.2,1);
+      pointer-events: none;
+    }
+    .sw-track.en .sw-thumb { transform: translateX(16px); }
+
+    /* ── Hero ────────────────────────────────────────────── */
+    #hero {
+      position: relative;
+      height: 100svh;
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    #hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1600&auto=format&fit=crop') center/cover no-repeat;
+      transform: scale(1.06);
+      transition: transform 8s ease;
+    }
+    #hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(155deg, rgba(15,45,20,.52) 0%, rgba(10,38,15,.68) 100%);
+    }
+
+    /* decorative corner leaves */
+    .h-leaf {
+      position: absolute;
+      z-index: 1;
+      opacity: .22;
+      pointer-events: none;
+    }
+    .h-leaf-tl { top: 5%;  left: 3%;  width: 110px; transform: rotate(-25deg); }
+    .h-leaf-tr { top: 8%;  right: 3%; width:  85px; transform: rotate(40deg) scaleX(-1); }
+    .h-leaf-bl { bottom: 12%; left: 2%;  width:  95px; transform: rotate(12deg); }
+    .h-leaf-br { bottom: 16%; right: 3%; width:  75px; transform: rotate(-35deg) scaleX(-1); }
+
+    #hero .content {
+      position: relative;
+      z-index: 2;
+      padding: 1.5rem;
+    }
+
+    .date-chip {
+      display: inline-block;
+      border: 1px solid rgba(255,255,255,.5);
+      border-radius: 100px;
+      padding: .3rem 1.4rem;
+      font-size: .75rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      margin-bottom: 1.6rem;
+      backdrop-filter: blur(4px);
+      background: rgba(42,92,53,.28);
+    }
+
+    #hero h1 {
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      font-weight: 300;
+      text-shadow: 0 2px 28px rgba(0,0,0,.35);
+    }
+    .amp { font-style: italic; color: var(--mint); }
+
+    .tagline {
+      font-family: var(--ff-head);
+      font-style: italic;
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      opacity: .85;
+      margin-top: .8rem;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem; left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .4rem;
+      opacity: .65;
+      font-size: .65rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .scroll-hint svg { animation: bounceY 2s infinite; }
+    @keyframes bounceY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+
+    /* ── Countdown ───────────────────────────────────────── */
+    #countdown {
+      position: relative;
+      background: var(--forest);
+      color: #fff;
+      padding: 4.5rem 1.5rem;
+      text-align: center;
+      overflow: hidden;
+    }
+    #countdown::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: var(--leaf-url);
+      background-size: 100px 100px;
+      opacity: .5;
+      pointer-events: none;
+    }
+
+    #countdown h2 {
+      position: relative;
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: 300;
+      letter-spacing: .06em;
+      margin-bottom: 2.5rem;
+    }
+
+    .cd-grid {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      gap: clamp(.8rem, 3vw, 3rem);
+      flex-wrap: wrap;
+    }
+    .cd-unit { display: flex; flex-direction: column; align-items: center; gap: .35rem; }
+    .cd-num {
+      font-family: var(--ff-head);
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1;
+      min-width: 2ch;
+      text-align: center;
+      color: var(--mint);
+    }
+    .cd-lbl {
+      font-size: .65rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      opacity: .65;
+    }
+    .cd-sep {
+      font-family: var(--ff-head);
+      font-size: clamp(2rem, 5vw, 4rem);
+      color: var(--mint);
+      opacity: .35;
+      align-self: flex-start;
+      margin-top: .5rem;
+    }
+
+    /* ── Gallery ─────────────────────────────────────────── */
+    #gallery {
+      position: relative;
+      padding: 5rem 0;
+      background: var(--light);
+      text-align: center;
+      overflow: hidden;
+    }
+    #gallery::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: var(--leaf-url);
+      background-size: 80px 80px;
+      opacity: .35;
+      pointer-events: none;
+    }
+
+    .section-head { position: relative; padding: 0 1.5rem 3rem; }
+    #gallery h2 { font-size: clamp(2rem, 5vw, 3rem); color: var(--forest); }
+
+    .slider-wrap { position: relative; overflow: hidden; }
+
+    .slider-track {
+      display: flex;
+      will-change: transform;
+      /* transition set by JS */
+    }
+
+    .slide {
+      min-width: 100%;
+      flex-shrink: 0;
+      height: clamp(280px, 55vw, 580px);
+      overflow: hidden;
+    }
+    .slide img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .slider-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,.88);
+      border: none;
+      border-radius: 50%;
+      width: 44px; height: 44px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--forest);
+      box-shadow: 0 2px 12px rgba(0,0,0,.14);
+      z-index: 2;
+      transition: background .2s, transform .2s;
+    }
+    .slider-btn:hover { background: #fff; transform: translateY(-50%) scale(1.08); }
+    .slider-btn.prev { left: 1rem; }
+    .slider-btn.next { right: 1rem; }
+
+    .slider-dots {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      gap: .5rem;
+      margin-top: 1.4rem;
+    }
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--sage);
+      cursor: pointer;
+      border: none;
+      transition: background .3s, transform .3s;
+    }
+    .dot.active { background: var(--forest); transform: scale(1.35); }
+
+    /* ── Story ───────────────────────────────────────────── */
+    #story {
+      padding: 6rem 1.5rem;
+      background: var(--bg);
+      text-align: center;
+    }
+    #story h2 { font-size: clamp(2rem, 5vw, 3rem); color: var(--forest); }
+
+    .ornament {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 2rem auto;
+      max-width: 240px;
+      color: var(--moss);
+    }
+    .ornament::before, .ornament::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--moss);
+      opacity: .4;
+    }
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr));
+      gap: 2.5rem;
+      max-width: 960px;
+      margin: 3rem auto 0;
+      text-align: left;
+    }
+
+    .story-card {
+      background: var(--white);
+      border-radius: 12px;
+      overflow: hidden;
+      border-top: 3px solid var(--sage);
+      box-shadow: 0 4px 24px rgba(0,0,0,.06);
+      transition: transform .3s, box-shadow .3s;
+    }
+    .story-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(0,0,0,.1); }
+
+    .story-card-img { height: 200px; overflow: hidden; }
+    .story-card-img img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      transition: transform .5s;
+    }
+    .story-card:hover .story-card-img img { transform: scale(1.05); }
+
+    .story-card-body { padding: 1.5rem; }
+    .story-card-body .yr {
+      font-family: var(--ff-head);
+      font-size: 1.8rem;
+      color: var(--olive);
+      line-height: 1;
+      margin-bottom: .25rem;
+    }
+    .story-card-body h3 { font-size: 1.15rem; color: var(--forest); margin-bottom: .55rem; }
+    .story-card-body p  { font-size: .9rem; opacity: .82; }
+
+    /* ── RSVP ────────────────────────────────────────────── */
+    #rsvp {
+      position: relative;
+      padding: 6rem 1.5rem;
+      background: var(--forest);
+      color: #fff;
+      text-align: center;
+      overflow: hidden;
+    }
+    #rsvp::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: var(--leaf-url);
+      background-size: 100px 100px;
+      opacity: .35;
+      pointer-events: none;
+    }
+
+    #rsvp h2 { position: relative; font-size: clamp(2rem, 5vw, 3rem); color: var(--mint); margin-bottom: .35rem; }
+    #rsvp .subtitle {
+      position: relative;
+      font-family: var(--ff-head);
+      font-style: italic;
+      font-size: 1.1rem;
+      opacity: .8;
+      margin-bottom: 3rem;
+    }
+    #rsvp .section-label { position: relative; color: var(--mint); }
+
+    .rsvp-form {
+      position: relative;
+      max-width: 680px;
+      margin: 0 auto;
+      display: grid;
+      gap: 1.4rem;
+      text-align: left;
+    }
+
+    .field-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.4rem;
+    }
+
+    .field { display: flex; flex-direction: column; gap: .4rem; }
+
+    .field label {
+      font-size: .72rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      opacity: .78;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 8px;
+      padding: .72rem 1rem;
+      color: #fff;
+      font-family: var(--ff-body);
+      font-size: .95rem;
+      outline: none;
+      width: 100%;
+      transition: border-color .2s, background .2s;
+    }
+    .field input::placeholder,
+    .field textarea::placeholder { color: rgba(255,255,255,.38); }
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--mint);
+      background: rgba(255,255,255,.15);
+    }
+    .field select option { background: var(--forest); color: #fff; }
+
+    /* guest counter */
+    .guest-counter {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 8px;
+      padding: .5rem .8rem;
+    }
+    .gc-btn {
+      background: rgba(255,255,255,.14);
+      border: none;
+      border-radius: 50%;
+      width: 30px; height: 30px;
+      cursor: pointer;
+      color: #fff;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .2s;
+    }
+    .gc-btn:hover { background: rgba(255,255,255,.28); }
+    .gc-count {
+      font-family: var(--ff-head);
+      font-size: 1.6rem;
+      min-width: 2ch;
+      text-align: center;
+      color: var(--mint);
+    }
+
+    /* dietary radios */
+    .radio-group { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .radio-item {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      cursor: pointer;
+    }
+    .radio-item input[type="radio"] {
+      appearance: none; -webkit-appearance: none;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,.38);
+      background: rgba(255,255,255,.1);
+      flex-shrink: 0;
+      position: relative;
+      cursor: pointer;
+      transition: border-color .2s;
+    }
+    .radio-item input[type="radio"]:checked { border-color: var(--mint); }
+    .radio-item input[type="radio"]:checked::after {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border-radius: 50%;
+      background: var(--mint);
+    }
+
+    #dietaryDetails {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height .35s ease, opacity .3s ease;
+    }
+    #dietaryDetails.open {
+      max-height: 80px;
+      opacity: 1;
+    }
+    #dietaryDetails input { margin-top: .6rem; }
+
+    /* accept-fields animated hide/show */
+    #acceptFields {
+      display: grid;
+      gap: 1.4rem;
+      overflow: hidden;
+      max-height: 2000px;
+      opacity: 1;
+      transition: max-height .55s ease, opacity .4s ease;
+    }
+    #acceptFields.collapsed {
+      max-height: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* submit */
+    .submit-btn {
+      position: relative;
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      background: var(--mint);
+      color: var(--forest);
+      border: none;
+      border-radius: 8px;
+      font-family: var(--ff-head);
+      font-size: 1.2rem;
+      letter-spacing: .06em;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0,0,0,.2);
+      transition: background .25s, transform .15s, box-shadow .25s;
+    }
+    .submit-btn:hover {
+      background: #cceac4;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 28px rgba(0,0,0,.3);
+    }
+    .submit-btn:active { transform: translateY(0); }
+
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 3rem 1rem;
+      position: relative;
+    }
+    .form-success .big-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+    .form-success h3 { font-size: 1.8rem; color: var(--mint); margin-bottom: .6rem; }
+    .form-success p { opacity: .8; }
+
+    /* ── Location ────────────────────────────────────────── */
+    #location { background: var(--bg); overflow: hidden; }
+
+    /* Venue photo mosaic */
+    .venue-mosaic {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: 400px 240px;
+      gap: 5px;
+    }
+    .vm { overflow: hidden; }
+    .vm img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      transition: transform .55s ease;
+    }
+    .vm:hover img { transform: scale(1.05); }
+    .vm-1 { grid-column: 1 / 3; grid-row: 1; }
+    .vm-2 { grid-column: 3;     grid-row: 1 / 3; }
+    .vm-3 { grid-column: 1;     grid-row: 2; }
+    .vm-4 { grid-column: 2;     grid-row: 2; }
+
+    /* Info + map */
+    .loc-body {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 3.5rem;
+      max-width: 1020px;
+      margin: 0 auto;
+      padding: 5rem 1.5rem;
+      align-items: start;
+    }
+
+    .loc-details { display: flex; flex-direction: column; gap: 1rem; }
+
+    .venue-name {
+      font-family: var(--ff-head);
+      font-size: 2.2rem;
+      color: var(--forest);
+      line-height: 1.15;
+    }
+    .venue-sub {
+      font-size: .75rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--moss);
+    }
+
+    address {
+      font-style: normal;
+      font-size: .95rem;
+      line-height: 1.9;
+      color: var(--text);
+      opacity: .82;
+      border-left: 2.5px solid var(--sage);
+      padding-left: .9rem;
+    }
+
+    .directions-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .6rem 1.5rem;
+      background: var(--forest);
+      color: #fff;
+      border-radius: 100px;
+      font-size: .78rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      align-self: flex-start;
+      transition: background .2s, transform .15s;
+    }
+    .directions-btn:hover { background: var(--moss); transform: translateY(-2px); }
+
+    .venue-feats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .6rem;
+    }
+    .feat {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      background: var(--light);
+      border-radius: 8px;
+      padding: .42rem .85rem;
+      font-size: .82rem;
+      color: var(--text);
+    }
+
+    .loc-map {
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,.1);
+      aspect-ratio: 4/3;
+    }
+    .loc-map iframe { width: 100%; height: 100%; border: none; display: block; }
+
+    /* Menu */
+    .menu-wrap {
+      position: relative;
+      background: var(--forest);
+      padding: 5.5rem 1.5rem;
+      overflow: hidden;
+      text-align: center;
+    }
+    .menu-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: var(--leaf-url);
+      background-size: 100px 100px;
+      opacity: .35;
+      pointer-events: none;
+    }
+    .menu-wrap .section-label { position: relative; color: var(--mint); }
+    .menu-wrap h2 {
+      position: relative;
+      color: var(--mint);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      margin-bottom: 3rem;
+    }
+
+    .menu-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2.8rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .menu-cat { display: flex; flex-direction: column; gap: .4rem; }
+    .menu-cat-icon { font-size: 1.7rem; margin-bottom: .3rem; display: block; }
+    .menu-cat h3 {
+      font-family: var(--ff-head);
+      font-size: 1.25rem;
+      color: var(--mint);
+      margin-bottom: .5rem;
+    }
+    .menu-items { list-style: none; display: flex; flex-direction: column; gap: .32rem; }
+    .menu-items li {
+      font-size: .875rem;
+      color: rgba(255,255,255,.8);
+      padding-left: .9rem;
+      position: relative;
+      line-height: 1.55;
+    }
+    .menu-items li::before {
+      content: '·';
+      position: absolute;
+      left: 0;
+      color: var(--sage);
+      font-weight: 700;
+    }
+
+    @media (max-width: 820px) {
+      .venue-mosaic {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 250px 200px 200px;
+      }
+      .vm-1 { grid-column: 1 / 3; grid-row: 1; }
+      .vm-2 { grid-column: 1;     grid-row: 2; }
+      .vm-3 { grid-column: 2;     grid-row: 2; }
+      .vm-4 { grid-column: 1 / 3; grid-row: 3; }
+      .loc-body { grid-template-columns: 1fr; }
+      .loc-map  { aspect-ratio: 16/9; }
+    }
+
+    /* ── Footer ──────────────────────────────────────────── */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,.48);
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+      font-size: .8rem;
+      letter-spacing: .08em;
+    }
+    .footer-names {
+      font-family: var(--ff-head);
+      font-size: 1.6rem;
+      color: var(--mint);
+      margin-bottom: .5rem;
+      font-weight: 300;
+    }
+
+    /* ── Reveal ──────────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 480px) {
+      .cd-sep { display: none; }
+      .slider-btn { width: 36px; height: 36px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Language switch ──────────────────────────────────────────── -->
+<div id="langSwitch" aria-label="Language selector">
+  <span class="lang-lbl" data-lang="ro">RO</span>
+  <button class="sw-track" id="swTrack" role="switch" aria-checked="false" aria-label="Toggle language">
+    <span class="sw-thumb"></span>
+  </button>
+  <span class="lang-lbl dim" data-lang="en">EN</span>
+</div>
+
+<!-- Hero ─────────────────────────────────────────────────────── -->
+<section id="hero">
+  <div id="hero-bg"></div>
+
+  <!-- corner leaf decorations -->
+  <svg class="h-leaf h-leaf-tl" viewBox="0 0 100 160" xmlns="http://www.w3.org/2000/svg" fill="rgba(184,223,176,.9)">
+    <path d="M50 5 Q90 32 85 88 Q80 144 50 158 Q20 144 15 88 Q10 32 50 5Z"/>
+    <line x1="50" y1="5" x2="50" y2="158" stroke="rgba(42,92,53,.7)" stroke-width="1.5"/>
+    <line x1="50" y1="45" x2="23" y2="72"  stroke="rgba(42,92,53,.4)" stroke-width="1"/>
+    <line x1="50" y1="70" x2="77" y2="94"  stroke="rgba(42,92,53,.4)" stroke-width="1"/>
+    <line x1="50" y1="95" x2="25" y2="118" stroke="rgba(42,92,53,.4)" stroke-width="1"/>
+  </svg>
+  <svg class="h-leaf h-leaf-tr" viewBox="0 0 100 160" xmlns="http://www.w3.org/2000/svg" fill="rgba(184,223,176,.9)">
+    <path d="M50 5 Q90 32 85 88 Q80 144 50 158 Q20 144 15 88 Q10 32 50 5Z"/>
+    <line x1="50" y1="5" x2="50" y2="158" stroke="rgba(42,92,53,.7)" stroke-width="1.5"/>
+    <line x1="50" y1="60" x2="25" y2="85" stroke="rgba(42,92,53,.4)" stroke-width="1"/>
+    <line x1="50" y1="90" x2="75" y2="112" stroke="rgba(42,92,53,.4)" stroke-width="1"/>
+  </svg>
+  <svg class="h-leaf h-leaf-bl" viewBox="0 0 100 160" xmlns="http://www.w3.org/2000/svg" fill="rgba(184,223,176,.9)">
+    <path d="M50 5 Q90 32 85 88 Q80 144 50 158 Q20 144 15 88 Q10 32 50 5Z"/>
+    <line x1="50" y1="5" x2="50" y2="158" stroke="rgba(42,92,53,.7)" stroke-width="1.5"/>
+  </svg>
+  <svg class="h-leaf h-leaf-br" viewBox="0 0 100 160" xmlns="http://www.w3.org/2000/svg" fill="rgba(184,223,176,.9)">
+    <path d="M50 5 Q90 32 85 88 Q80 144 50 158 Q20 144 15 88 Q10 32 50 5Z"/>
+    <line x1="50" y1="5" x2="50" y2="158" stroke="rgba(42,92,53,.7)" stroke-width="1.5"/>
+  </svg>
+
+  <div class="content">
+    <span class="date-chip" data-i18n="dateChip">19 Iunie 2027</span>
+    <h1>Diana <span class="amp">&amp;</span> Cristi</h1>
+    <p class="tagline" data-i18n="heroTagline">vă invită cu drag să le fiți alături la nuntă</p>
+  </div>
+  <div class="scroll-hint">
+    <span data-i18n="scroll">Scroll</span>
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M8 3v10M8 13l-4-4M8 13l4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+</section>
+
+<!-- Countdown ────────────────────────────────────────────────── -->
+<section id="countdown">
+  <h2 class="reveal" data-i18n="cdTitle">Numărătoarea inversă până la marele eveniment</h2>
+  <div class="cd-grid reveal">
+    <div class="cd-unit">
+      <span class="cd-num" id="cd-days">000</span>
+      <span class="cd-lbl" data-i18n="cdDays">Zile</span>
+    </div>
+    <span class="cd-sep">:</span>
+    <div class="cd-unit">
+      <span class="cd-num" id="cd-hours">00</span>
+      <span class="cd-lbl" data-i18n="cdHours">Ore</span>
+    </div>
+    <span class="cd-sep">:</span>
+    <div class="cd-unit">
+      <span class="cd-num" id="cd-minutes">00</span>
+      <span class="cd-lbl" data-i18n="cdMinutes">Minute</span>
+    </div>
+    <span class="cd-sep">:</span>
+    <div class="cd-unit">
+      <span class="cd-num" id="cd-seconds">00</span>
+      <span class="cd-lbl" data-i18n="cdSeconds">Secunde</span>
+    </div>
+  </div>
+</section>
+
+<!-- Gallery ──────────────────────────────────────────────────── -->
+<section id="gallery">
+  <div class="section-head reveal">
+    <span class="section-label" data-i18n="galLabel">Momentele noastre</span>
+    <h2 data-i18n="galTitle">O privire asupra noastră</h2>
+  </div>
+
+  <div class="slider-wrap">
+    <div class="slider-track" id="sliderTrack">
+      <div class="slide"><img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?w=1400&auto=format&fit=crop" alt="" loading="lazy"/></div>
+      <div class="slide"><img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=1400&auto=format&fit=crop" alt="" loading="lazy"/></div>
+      <div class="slide"><img src="https://images.unsplash.com/photo-1511285560929-80b456503681?w=1400&auto=format&fit=crop" alt="" loading="lazy"/></div>
+      <div class="slide"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=1400&auto=format&fit=crop" alt="" loading="lazy"/></div>
+      <div class="slide"><img src="https://images.unsplash.com/photo-1591604021695-0c69b7c05981?w=1400&auto=format&fit=crop" alt="" loading="lazy"/></div>
+    </div>
+    <button class="slider-btn prev" id="sliderPrev" aria-label="Previous">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M11 4l-5 5 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <button class="slider-btn next" id="sliderNext" aria-label="Next">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M7 4l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+  <div class="slider-dots" id="sliderDots"></div>
+</section>
+
+<!-- Story ────────────────────────────────────────────────────── -->
+<section id="story">
+  <span class="section-label reveal" data-i18n="storyLabel">Cum a început totul</span>
+  <h2 class="reveal" data-i18n="storyTitle">Povestea noastră</h2>
+  <div class="ornament reveal" aria-hidden="true">
+    <svg width="22" height="36" viewBox="0 0 22 36" fill="currentColor">
+      <path d="M11 1 Q21 8 19 19 Q17 30 11 35 Q5 30 3 19 Q1 8 11 1Z" opacity=".85"/>
+      <line x1="11" y1="1" x2="11" y2="35" stroke="currentColor" stroke-width="1" opacity=".45"/>
+    </svg>
+  </div>
+
+  <div class="story-grid">
+    <div class="story-card reveal">
+      <div class="story-card-img">
+        <img src="https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=600&auto=format&fit=crop" alt="" loading="lazy"/>
+      </div>
+      <div class="story-card-body">
+        <div class="yr">2019</div>
+        <h3 data-i18n="s1title">Prima întâlnire</h3>
+        <p data-i18n="s1text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod nisl vel ultricies lacinia. Sed euismod, nisl vel ultricies lacinia, nisl sit amet aliquam nisl.</p>
+      </div>
+    </div>
+    <div class="story-card reveal">
+      <div class="story-card-img">
+        <img src="https://images.unsplash.com/photo-1474552226712-ac0f0961a954?w=600&auto=format&fit=crop" alt="" loading="lazy"/>
+      </div>
+      <div class="story-card-body">
+        <div class="yr">2020</div>
+        <h3 data-i18n="s2title">Prima întâlnire romantică</h3>
+        <p data-i18n="s2text">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis. Vestibulum tortor quam feugiat vitae, ultricies eget tempor sit amet ante.</p>
+      </div>
+    </div>
+    <div class="story-card reveal">
+      <div class="story-card-img">
+        <img src="https://images.unsplash.com/photo-1538440516896-2da56e75e7e1?w=600&auto=format&fit=crop" alt="" loading="lazy"/>
+      </div>
+      <div class="story-card-body">
+        <div class="yr">2022</div>
+        <h3 data-i18n="s3title">Aventuri împreună</h3>
+        <p data-i18n="s3text">Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna vel scelerisque nisl. Donec sed odio dui, ullamcorper nulla non metus auctor fringilla.</p>
+      </div>
+    </div>
+    <div class="story-card reveal">
+      <div class="story-card-img">
+        <img src="https://images.unsplash.com/photo-1532673576284-e95d4e1f5562?w=600&auto=format&fit=crop" alt="" loading="lazy"/>
+      </div>
+      <div class="story-card-body">
+        <div class="yr">2024</div>
+        <h3 data-i18n="s4title">Cererea în căsătorie</h3>
+        <p data-i18n="s4text">Cras mattis consectetur purus sit amet fermentum. Cras justo odio dapibus ac facilisis in, egestas eget quam. Morbi leo risus porta ac consectetur vestibulum.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Location ─────────────────────────────────────────────────── -->
+<section id="location">
+
+  <!-- Venue photo mosaic -->
+  <div class="venue-mosaic">
+    <div class="vm vm-1">
+      <img src="https://reinaevents.ro/wp-content/uploads/2024/09/salonul-garden.jpg"
+           alt="Summer Garden — vedere generală" loading="lazy"/>
+    </div>
+    <div class="vm vm-2">
+      <img src="https://reinaevents.ro/wp-content/uploads/2022/04/gradina-de-vara_reina-events-ballroom_04.jpg"
+           alt="Summer Garden — detaliu" loading="lazy"/>
+    </div>
+    <div class="vm vm-3">
+      <img src="https://reinaevents.ro/wp-content/uploads/2022/04/gradina-de-vara_reina-events-ballroom_01.jpg"
+           alt="Summer Garden — decor" loading="lazy"/>
+    </div>
+    <div class="vm vm-4">
+      <img src="https://reinaevents.ro/wp-content/uploads/2022/04/gradina-de-vara_reina-events-ballroom_02.jpg"
+           alt="Summer Garden — ambient" loading="lazy"/>
+    </div>
+  </div>
+
+  <!-- Address + map -->
+  <div class="loc-body">
+    <div class="loc-details reveal">
+      <span class="section-label" data-i18n="locLabel">Locația</span>
+      <div class="venue-name">Summer Garden</div>
+      <div class="venue-sub">Reina Events Ballroom</div>
+      <address>
+        Strada Lt. Nicolae Pascu nr. 81<br/>
+        Sector 3, București, România
+      </address>
+      <a href="https://www.google.com/maps/dir/?api=1&destination=Strada+Lt.+Nicolae+Pascu+81,+Sector+3,+Bucharest,+Romania"
+         target="_blank" rel="noopener noreferrer"
+         class="directions-btn" data-i18n="locDir">
+        ↗ Obține direcții
+      </a>
+      <div class="venue-feats">
+        <div class="feat">👥 <span data-i18n="locCap">60–100 invitați</span></div>
+        <div class="feat">🌿 <span data-i18n="locOut">Spațiu în aer liber</span></div>
+        <div class="feat">🌙 <span data-i18n="locEve">Seară festivă</span></div>
+        <div class="feat">📍 <span data-i18n="locCity">București, Sector 3</span></div>
+      </div>
+    </div>
+    <div class="loc-map reveal">
+      <iframe
+        src="https://maps.google.com/maps?q=Strada+Lt.+Nicolae+Pascu+81,+Sector+3,+Bucuresti,+Romania&output=embed"
+        title="Reina Events — Summer Garden"
+        allowfullscreen
+        loading="lazy">
+      </iframe>
+    </div>
+  </div>
+
+  <!-- Menu -->
+  <div class="menu-wrap">
+    <span class="section-label reveal" data-i18n="menuLabel">Răsfăț culinar</span>
+    <h2 class="reveal" data-i18n="menuTitle">Meniu</h2>
+
+    <!-- Romanian menu -->
+    <div id="menuRo" class="menu-grid">
+      <div class="menu-cat reveal">
+        <span class="menu-cat-icon">🥂</span>
+        <h3>Cocktail &amp; Aperitiv</h3>
+        <ul class="menu-items">
+          <li>Cocteil de bun venit cu fructe de sezon</li>
+          <li>Platouri cu brânzeturi și mezeluri premium</li>
+          <li>Bruschette cu roșii și busuioc proaspăt</li>
+          <li>Ciupercuțe umplute cu brânză și verdețuri</li>
+          <li>Fursecuri cu prosciutto crudo</li>
+        </ul>
+      </div>
+      <div class="menu-cat reveal">
+        <span class="menu-cat-icon">🥗</span>
+        <h3>Antreuri</h3>
+        <ul class="menu-items">
+          <li>Carpaccio de vită cu rucola și parmezan</li>
+          <li>Cremă de avocado cu tartine de casă</li>
+          <li>Salată grecească cu brânză feta</li>
+          <li>Supă cremă de dovleac cu semințe prăjite</li>
+        </ul>
+      </div>
+      <div class="menu-cat reveal">
+        <span class="menu-cat-icon">🍽️</span>
+        <h3>Felul Principal</h3>
+        <ul class="menu-items">
+          <li>Ciorbă de văcuță cu tăiței de casă</li>
+          <li>Mușchiuleț de vită la cuptor cu sos de vin roșu</li>
+          <li>Pui umplut cu spanac și brânză de capră</li>
+          <li>Somon la grătar cu sos de lămâie și capere</li>
+          <li>Garnituri: piure trufat, legume gratinate, cartofi noi</li>
+        </ul>
+      </div>
+      <div class="menu-cat reveal">
+        <span class="menu-cat-icon">🎂</span>
+        <h3>Deserturi</h3>
+        <ul class="menu-items">
+          <li>Tortul mirilor — creat special pentru voi</li>
+          <li>Papanași cu dulceață de vișine și smântână</li>
+          <li>Mousse de ciocolată cu fructe de pădure</li>
+          <li>Macarons asortate</li>
+          <li>Candy bar cu dulciuri tradiționale</li>
+        </ul>
+      </div>
+      <div class="menu-cat reveal">
+        <span class="menu-cat-icon">🍷</span>
+        <h3>Băuturi — Open Bar</h3>
+        <ul class="menu-items">
+          <li>Vinuri albe și roșii din Podgoria Recaș</li>
+          <li>Prosecco și șampanie pentru toasturi</li>
+          <li>Bere artizanală și la draft</li>
+          <li>Cocktailuri clasice și signature</li>
+          <li>Sucuri naturale, apă plată și minerală</li>
+          <li>Cafea, ceaiuri și digestive</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- English menu (hidden by default) -->
+    <div id="menuEn" class="menu-grid" hidden>
+      <div class="menu-cat reveal">
+        <span class="menu-cat-icon">🥂</span>
+        <h3>Cocktail Hour</h3>
+        <ul class="menu-items">
+          <li>Welcome cocktail with seasonal fruits</li>
+          <li>Premium cheese &amp; charcuterie boards</li>
+          <li>Bruschetta with tomatoes and fresh basil</li>
+          <li>Cheese-stuffed mushrooms with herbs</li>
+          <li>Prosciutto crudo pastries</li>
+        </ul>
+      </div>
+      <div class="menu-cat reveal">
+        <span class="menu-cat-icon">🥗</span>
+        <h3>Starters</h3>
+        <ul class="menu-items">
+          <li>Beef carpaccio with arugula and parmesan</li>
+          <li>Avocado cream with house-made crostini</li>
+          <li>Greek salad with feta cheese</li>
+          <li>Pumpkin cream soup with toasted seeds</li>
+        </ul>
+      </div>
+      <div class="menu-cat reveal">
+        <span class="menu-cat-icon">🍽️</span>
+        <h3>Main Course</h3>
+        <ul class="menu-items">
+          <li>Traditional beef broth with homemade noodles</li>
+          <li>Oven-roasted beef tenderloin with red wine sauce</li>
+          <li>Stuffed chicken with spinach and goat cheese</li>
+          <li>Grilled salmon with lemon and caper sauce</li>
+          <li>Sides: truffle mash, gratin vegetables, new potatoes</li>
+        </ul>
+      </div>
+      <div class="menu-cat reveal">
+        <span class="menu-cat-icon">🎂</span>
+        <h3>Desserts</h3>
+        <ul class="menu-items">
+          <li>Wedding cake — crafted just for you</li>
+          <li>Papanași (Romanian doughnuts) with sour cherry jam</li>
+          <li>Dark chocolate mousse with mixed berries</li>
+          <li>Assorted macarons</li>
+          <li>Candy bar with traditional sweets</li>
+        </ul>
+      </div>
+      <div class="menu-cat reveal">
+        <span class="menu-cat-icon">🍷</span>
+        <h3>Drinks — Open Bar</h3>
+        <ul class="menu-items">
+          <li>White &amp; red wines from Recaș Winery</li>
+          <li>Prosecco and champagne for toasts</li>
+          <li>Craft and draught beer</li>
+          <li>Classic and signature cocktails</li>
+          <li>Fresh juices, still and sparkling water</li>
+          <li>Coffee, teas and digestifs</li>
+        </ul>
+      </div>
+    </div>
+  </div><!-- /menu-wrap -->
+
+</section>
+
+<!-- RSVP ─────────────────────────────────────────────────────── -->
+<section id="rsvp">
+  <span class="section-label reveal" data-i18n="rsvpLabel">Alătură-te nouă</span>
+  <h2 class="reveal" data-i18n="rsvpTitle">RSVP</h2>
+  <p class="subtitle reveal" data-i18n="rsvpSub">Vă rugăm să răspundeți până pe 1 Martie 2027</p>
+
+  <form class="rsvp-form reveal" id="rsvpForm" novalidate>
+
+    <div class="field-group">
+      <div class="field">
+        <label for="firstName" data-i18n="fNameLbl">Prenume *</label>
+        <input type="text" id="firstName" name="firstName"
+               data-ph="fNamePh" placeholder="Diana" required />
+      </div>
+      <div class="field">
+        <label for="lastName" data-i18n="lNameLbl">Nume *</label>
+        <input type="text" id="lastName" name="lastName"
+               data-ph="lNamePh" placeholder="Popescu" required />
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="email" data-i18n="emailLbl">Adresă de email *</label>
+      <input type="email" id="email" name="email"
+             data-ph="emailPh" placeholder="tu@exemplu.com" required />
+    </div>
+
+    <div class="field">
+      <label for="attendance" data-i18n="attendLbl">Vei participa? *</label>
+      <select id="attendance" name="attendance" required>
+        <option value="" disabled selected data-i18n="attendPh">— Selectează —</option>
+        <option value="yes" data-i18n="attendYes">Accept cu drag ✓</option>
+        <option value="no"  data-i18n="attendNo">Refuz cu regret ✗</option>
+      </select>
+    </div>
+
+    <!-- collapsed when declining -->
+    <div id="acceptFields" class="collapsed">
+
+      <div class="field">
+        <label data-i18n="guestsLbl">Număr de invitați (inclusiv tu)</label>
+        <div class="guest-counter">
+          <button type="button" class="gc-btn" id="gcMinus" aria-label="Scade">−</button>
+          <span class="gc-count" id="gcDisplay">1</span>
+          <button type="button" class="gc-btn" id="gcPlus"  aria-label="Adaugă">+</button>
+          <span style="opacity:.6; font-size:.84rem; margin-left:.4rem;" data-i18n="persons">persoană/persoane</span>
+        </div>
+        <input type="hidden" id="gcVal" name="guests" value="1" />
+      </div>
+
+      <div class="field">
+        <label data-i18n="dietLbl">Cerințe alimentare speciale?</label>
+        <div class="radio-group">
+          <label class="radio-item">
+            <input type="radio" name="dietary" value="no" id="dietNo" checked />
+            <span data-i18n="dietNoLbl">Nu</span>
+          </label>
+          <label class="radio-item">
+            <input type="radio" name="dietary" value="yes" id="dietYes" />
+            <span data-i18n="dietYesLbl">Da</span>
+          </label>
+        </div>
+        <div id="dietaryDetails">
+          <input type="text" name="dietaryText"
+                 data-ph="dietPh" placeholder="Ex: vegan, fără gluten, alergie la nuci..." />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="accommodation" data-i18n="accomLbl">Ai nevoie de cazare?</label>
+        <select id="accommodation" name="accommodation">
+          <option value="" disabled selected data-i18n="accomPh">— Selectează —</option>
+          <option value="single" data-i18n="accomS">Da — cameră single</option>
+          <option value="double" data-i18n="accomD">Da — cameră dublă</option>
+          <option value="family" data-i18n="accomF">Da — cameră familială</option>
+          <option value="none"   data-i18n="accomN">Nu, mă descurc singur/ă</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="message" data-i18n="msgLbl">Un mesaj pentru noi 💌</label>
+        <textarea id="message" name="message" rows="4"
+                  data-ph="msgPh" placeholder="Scrie-ne urările tale aici…"></textarea>
+      </div>
+
+    </div><!-- /acceptFields -->
+
+    <button type="submit" class="submit-btn" data-i18n="submitBtn">Trimite RSVP →</button>
+  </form>
+
+  <div class="form-success" id="formSuccess">
+    <div class="big-icon">💌</div>
+    <h3 data-i18n="successTitle">Mulțumim din suflet!</h3>
+    <p data-i18n="successText">Am primit răspunsul tău și abia așteptăm să sărbătorim împreună cu tine. Te vom contacta cu mai multe detalii aproape de data evenimentului.</p>
+  </div>
+</section>
+
+<!-- Footer ───────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-names">Diana &amp; Cristi</div>
+  <p><span data-i18n="footDate">19 Iunie 2027</span> &nbsp;·&nbsp; <span data-i18n="footLoc">Cluj-Napoca, România</span></p>
+  <p style="margin-top:.8rem; font-size:.7rem;" data-i18n="footLove">Făcut cu dragoste ♥</p>
+</footer>
+
+<script>
+/* ── i18n ─────────────────────────────────────────────────────── */
+const T = {
+  ro: {
+    dateChip:     "19 Iunie 2027",
+    heroTagline:  "vă invită cu drag să le fiți alături la nuntă",
+    scroll:       "Scroll",
+    cdTitle:      "Numărătoarea inversă până la marele eveniment",
+    cdDays:       "Zile", cdHours: "Ore", cdMinutes: "Minute", cdSeconds: "Secunde",
+    galLabel:     "Momentele noastre",
+    galTitle:     "O privire asupra noastră",
+    storyLabel:   "Cum a început totul",
+    storyTitle:   "Povestea noastră",
+    s1title: "Prima întâlnire",
+    s1text:  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod nisl vel ultricies lacinia. Sed euismod, nisl vel ultricies lacinia, nisl sit amet aliquam nisl.",
+    s2title: "Prima întâlnire romantică",
+    s2text:  "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis. Vestibulum tortor quam feugiat vitae, ultricies eget tempor sit amet ante.",
+    s3title: "Aventuri împreună",
+    s3text:  "Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna vel scelerisque nisl. Donec sed odio dui, ullamcorper nulla non metus auctor fringilla.",
+    s4title: "Cererea în căsătorie",
+    s4text:  "Cras mattis consectetur purus sit amet fermentum. Cras justo odio dapibus ac facilisis in, egestas eget quam. Morbi leo risus porta ac consectetur vestibulum.",
+    rsvpLabel:  "Alătură-te nouă",
+    rsvpTitle:  "RSVP",
+    rsvpSub:    "Vă rugăm să răspundeți până pe 1 Martie 2027",
+    fNameLbl:   "Prenume *",      fNamePh:   "Diana",
+    lNameLbl:   "Nume *",         lNamePh:   "Popescu",
+    emailLbl:   "Adresă de email *", emailPh: "tu@exemplu.com",
+    attendLbl:  "Vei participa? *",
+    attendPh:   "— Selectează —",
+    attendYes:  "Accept cu drag ✓",
+    attendNo:   "Refuz cu regret ✗",
+    guestsLbl:  "Număr de invitați (inclusiv tu)",
+    persons:    "persoană/persoane",
+    dietLbl:    "Cerințe alimentare speciale?",
+    dietNoLbl:  "Nu", dietYesLbl: "Da",
+    dietPh:     "Ex: vegan, fără gluten, alergie la nuci...",
+    accomLbl:   "Ai nevoie de cazare?",
+    accomPh:    "— Selectează —",
+    accomS:     "Da — cameră single",
+    accomD:     "Da — cameră dublă",
+    accomF:     "Da — cameră familială",
+    accomN:     "Nu, mă descurc singur/ă",
+    msgLbl:     "Un mesaj pentru noi 💌",
+    msgPh:      "Scrie-ne urările tale aici…",
+    submitBtn:  "Trimite RSVP →",
+    successTitle: "Mulțumim din suflet!",
+    successText:  "Am primit răspunsul tău și abia așteptăm să sărbătorim împreună cu tine. Te vom contacta cu mai multe detalii aproape de data evenimentului.",
+    locLabel:   "Locația",
+    locDir:     "↗ Obține direcții",
+    locCap:     "60–100 invitați",
+    locOut:     "Spațiu în aer liber",
+    locEve:     "Seară festivă",
+    locCity:    "București, Sector 3",
+    menuLabel:  "Răsfăț culinar",
+    menuTitle:  "Meniu",
+    footDate:   "19 Iunie 2027",
+    footLoc:    "Cluj-Napoca, România",
+    footLove:   "Făcut cu dragoste ♥",
+    reqAlert:   "Vă rugăm să completați toate câmpurile obligatorii.",
+  },
+  en: {
+    dateChip:     "19 June 2027",
+    heroTagline:  "joyfully invite you to celebrate their wedding",
+    scroll:       "Scroll",
+    cdTitle:      "Counting down to the big day",
+    cdDays:       "Days", cdHours: "Hours", cdMinutes: "Minutes", cdSeconds: "Seconds",
+    galLabel:     "Our moments",
+    galTitle:     "A glimpse of us",
+    storyLabel:   "How it all began",
+    storyTitle:   "Our Story",
+    s1title: "The First Meeting",
+    s1text:  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod nisl vel ultricies lacinia. Sed euismod, nisl vel ultricies lacinia, nisl sit amet aliquam nisl.",
+    s2title: "The First Date",
+    s2text:  "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis. Vestibulum tortor quam feugiat vitae, ultricies eget tempor sit amet ante.",
+    s3title: "Adventures Together",
+    s3text:  "Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna vel scelerisque nisl. Donec sed odio dui, ullamcorper nulla non metus auctor fringilla.",
+    s4title: "The Proposal",
+    s4text:  "Cras mattis consectetur purus sit amet fermentum. Cras justo odio dapibus ac facilisis in, egestas eget quam. Morbi leo risus porta ac consectetur vestibulum.",
+    rsvpLabel:  "Join us",
+    rsvpTitle:  "RSVP",
+    rsvpSub:    "Please reply by 1 March 2027",
+    fNameLbl:   "First Name *",   fNamePh:   "Diana",
+    lNameLbl:   "Last Name *",    lNamePh:   "Smith",
+    emailLbl:   "Email Address *", emailPh:  "you@example.com",
+    attendLbl:  "Will you attend? *",
+    attendPh:   "— Please select —",
+    attendYes:  "Joyfully accept ✓",
+    attendNo:   "Regretfully decline ✗",
+    guestsLbl:  "Number of guests (including yourself)",
+    persons:    "person(s)",
+    dietLbl:    "Special dietary requirements?",
+    dietNoLbl:  "No", dietYesLbl: "Yes",
+    dietPh:     "e.g. vegan, gluten-free, nut allergy...",
+    accomLbl:   "Do you need accommodation?",
+    accomPh:    "— Please select —",
+    accomS:     "Yes — single room",
+    accomD:     "Yes — double room",
+    accomF:     "Yes — family room",
+    accomN:     "No, I have arranged my own",
+    msgLbl:     "A note for the happy couple 💌",
+    msgPh:      "Write your wishes here…",
+    submitBtn:  "Send my RSVP →",
+    successTitle: "Thank you so much!",
+    successText:  "We've received your RSVP and can't wait to celebrate with you. We'll be in touch with more details closer to the date.",
+    locLabel:   "Venue",
+    locDir:     "↗ Get Directions",
+    locCap:     "60–100 guests",
+    locOut:     "Outdoor space",
+    locEve:     "Evening celebration",
+    locCity:    "Bucharest, Sector 3",
+    menuLabel:  "Food & Drinks",
+    menuTitle:  "Menu",
+    footDate:   "19 June 2027",
+    footLoc:    "Cluj-Napoca, Romania",
+    footLove:   "Made with love ♥",
+    reqAlert:   "Please fill in all required fields.",
+  }
+};
+
+let lang = 'ro';
+
+function applyLang(l) {
+  lang = l;
+  const t = T[l];
+  document.documentElement.lang = l;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.dataset.i18n;
+    if (t[k] != null) el.textContent = t[k];
+  });
+  document.querySelectorAll('[data-ph]').forEach(el => {
+    const k = el.dataset.ph;
+    if (t[k] != null) el.placeholder = t[k];
+  });
+}
+
+/* language toggle */
+const swTrack = document.getElementById('swTrack');
+document.querySelectorAll('.lang-lbl').forEach(el => {
+  el.addEventListener('click', () => switchLang(el.dataset.lang));
+});
+swTrack.addEventListener('click', () => switchLang(lang === 'ro' ? 'en' : 'ro'));
+
+function switchLang(l) {
+  applyLang(l);
+  swTrack.classList.toggle('en', l === 'en');
+  swTrack.setAttribute('aria-checked', l === 'en');
+  document.querySelectorAll('.lang-lbl').forEach(el =>
+    el.classList.toggle('dim', el.dataset.lang !== l)
+  );
+  document.getElementById('menuRo').hidden = (l === 'en');
+  document.getElementById('menuEn').hidden = (l !== 'en');
+}
+
+/* ── Countdown ─────────────────────────────────────────────────── */
+(function () {
+  const target = new Date('2027-06-19T16:00:00');
+  const p = (n, w = 2) => String(n).padStart(w, '0');
+  function tick() {
+    const d = target - Date.now();
+    if (d <= 0) return;
+    document.getElementById('cd-days').textContent    = p(Math.floor(d / 864e5), 3);
+    document.getElementById('cd-hours').textContent   = p(Math.floor((d % 864e5) / 36e5));
+    document.getElementById('cd-minutes').textContent = p(Math.floor((d % 36e5) / 6e4));
+    document.getElementById('cd-seconds').textContent = p(Math.floor((d % 6e4) / 1e3));
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+
+/* ── Infinite-loop carousel ────────────────────────────────────── */
+(function () {
+  const track     = document.getElementById('sliderTrack');
+  const dotsEl    = document.getElementById('sliderDots');
+  const origSlides = Array.from(track.querySelectorAll('.slide'));
+  const N = origSlides.length;
+
+  // Prepend clone of last slide, append clone of first slide
+  track.insertBefore(origSlides[N - 1].cloneNode(true), origSlides[0]);
+  track.appendChild(origSlides[0].cloneNode(true));
+
+  let domIdx = 1;      // real first slide is at DOM index 1
+  let busy   = false;
+  let timer;
+
+  function moveTo(idx, animate) {
+    track.style.transition = animate
+      ? 'transform .72s cubic-bezier(.4,0,.2,1)'
+      : 'none';
+    track.style.transform = `translateX(-${idx * 100}%)`;
+  }
+
+  function syncDots() {
+    const realIdx = ((domIdx - 1) + N) % N;
+    Array.from(dotsEl.children).forEach((d, i) =>
+      d.classList.toggle('active', i === realIdx)
+    );
+  }
+
+  // Build dots
+  origSlides.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', 'Slide ' + (i + 1));
+    d.addEventListener('click', () => go(i + 1));
+    dotsEl.appendChild(d);
+  });
+
+  // Set start position without animation
+  moveTo(domIdx, false);
+
+  function go(newIdx) {
+    if (busy) return;
+    busy = true;
+    domIdx = newIdx;
+    moveTo(domIdx, true);
+    syncDots();
+  }
+
+  track.addEventListener('transitionend', e => {
+    if (e.target !== track || e.propertyName !== 'transform') return;
+    busy = false;
+    if (domIdx === 0) {
+      // cloned last → silently jump to real last
+      domIdx = N;
+      moveTo(domIdx, false);
+      track.offsetWidth; // force reflow
+      syncDots();
+    } else if (domIdx === N + 1) {
+      // cloned first → silently jump to real first
+      domIdx = 1;
+      moveTo(domIdx, false);
+      track.offsetWidth;
+      syncDots();
+    }
+  });
+
+  const prev = () => { go(domIdx - 1); resetTimer(); };
+  const next = () => { go(domIdx + 1); resetTimer(); };
+
+  document.getElementById('sliderPrev').addEventListener('click', prev);
+  document.getElementById('sliderNext').addEventListener('click', next);
+
+  // Touch/swipe
+  let sx = 0;
+  track.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchend',   e => {
+    const dx = e.changedTouches[0].clientX - sx;
+    if (Math.abs(dx) > 40) { dx < 0 ? next() : prev(); }
+  });
+
+  function resetTimer() {
+    clearInterval(timer);
+    timer = setInterval(next, 5000);
+  }
+  resetTimer();
+})();
+
+/* ── Guest counter ─────────────────────────────────────────────── */
+(function () {
+  let n = 1;
+  const disp   = document.getElementById('gcDisplay');
+  const hidden = document.getElementById('gcVal');
+  document.getElementById('gcMinus').addEventListener('click', () => {
+    if (n > 1)  { n--; disp.textContent = n; hidden.value = n; }
+  });
+  document.getElementById('gcPlus').addEventListener('click', () => {
+    if (n < 10) { n++; disp.textContent = n; hidden.value = n; }
+  });
+})();
+
+/* ── Attendance: collapse extra fields when declining ──────────── */
+const acceptFields = document.getElementById('acceptFields');
+document.getElementById('attendance').addEventListener('change', function () {
+  if (this.value === 'yes') {
+    acceptFields.classList.remove('collapsed');
+  } else {
+    acceptFields.classList.add('collapsed');
+  }
+});
+
+/* ── Dietary radio → show/hide text input ──────────────────────── */
+const dietaryDetails = document.getElementById('dietaryDetails');
+document.querySelectorAll('input[name="dietary"]').forEach(r => {
+  r.addEventListener('change', () => {
+    dietaryDetails.classList.toggle('open',
+      document.getElementById('dietYes').checked
+    );
+  });
+});
+
+/* ── RSVP submit ───────────────────────────────────────────────── */
+document.getElementById('rsvpForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const fn = document.getElementById('firstName').value.trim();
+  const ln = document.getElementById('lastName').value.trim();
+  const em = document.getElementById('email').value.trim();
+  const at = document.getElementById('attendance').value;
+  if (!fn || !ln || !em || !at) { alert(T[lang].reqAlert); return; }
+
+  // TODO: send to your backend / Formspree / Netlify Forms
+  this.style.display = 'none';
+  const s = document.getElementById('formSuccess');
+  s.style.display = 'block';
+  s.scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+
+/* ── Scroll reveal ─────────────────────────────────────────────── */
+(function () {
+  const io = new IntersectionObserver(
+    es => es.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    }),
+    { threshold: 0.1 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+})();
+
+/* ── Hero parallax ─────────────────────────────────────────────── */
+(function () {
+  const bg = document.getElementById('hero-bg');
+  window.addEventListener('scroll', () => {
+    bg.style.transform = `scale(1.05) translateY(${window.scrollY * 0.45}px)`;
+  }, { passive: true });
+  setTimeout(() => { bg.style.transform = 'scale(1) translateY(0)'; }, 80);
+})();
+</script>
+</body>
+</html>
