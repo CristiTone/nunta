@@ -578,15 +578,39 @@
     }
     .submit-btn:active { transform: translateY(0); }
 
-    .form-success {
+    .form-success,
+    .form-error {
       display: none;
       text-align: center;
       padding: 3rem 1rem;
       position: relative;
     }
-    .form-success .big-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+    .form-success .big-icon,
+    .form-error .big-icon { font-size: 3.5rem; margin-bottom: 1rem; }
     .form-success h3 { font-size: 1.8rem; color: var(--mint); margin-bottom: .6rem; }
     .form-success p { opacity: .8; }
+    .form-error h3 { font-size: 1.8rem; color: #f4a261; margin-bottom: .6rem; }
+    .form-error p { opacity: .8; }
+    .form-error a { color: var(--mint); }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .submit-btn.loading {
+      pointer-events: none;
+      opacity: .75;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .7rem;
+    }
+    .submit-btn.loading::after {
+      content: '';
+      width: 18px; height: 18px;
+      border: 2.5px solid rgba(42,92,53,.35);
+      border-top-color: var(--forest);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      flex-shrink: 0;
+    }
 
     /* ── Location ────────────────────────────────────────── */
     #location { background: var(--bg); overflow: hidden; }
@@ -928,11 +952,11 @@
 
   <div class="slider-wrap">
     <div class="slider-track" id="sliderTrack">
-      <div class="slide"><img src="pics/salon/36db14ee-4976-445a-abbb-a7ebb53720e3.jpeg" alt="" loading="lazy"/></div>
-      <div class="slide"><img src="pics/salon/916a4d38-bc4d-4c72-8fbf-351bb30644a5.jpeg" alt="" loading="lazy"/></div>
-      <div class="slide"><img src="pics/salon/ce3f4169-04b8-4be5-80d7-17a49d9d3e85.jpeg" alt="" loading="lazy"/></div>
-      <div class="slide"><img src="pics/salon/salon-evenimente-2.jpg" alt="" loading="lazy"/></div>
-      <div class="slide"><img src="pics/salon/salon-evenimente.jpg" alt="" loading="lazy"/></div>
+      <div class="slide"><img src="pics/salon/36db14ee-4976-445a-abbb-a7ebb53720e3.jpeg" alt="" loading="eager" decoding="async"/></div>
+      <div class="slide"><img src="pics/salon/916a4d38-bc4d-4c72-8fbf-351bb30644a5.jpeg" alt="" loading="lazy" decoding="async"/></div>
+      <div class="slide"><img src="pics/salon/ce3f4169-04b8-4be5-80d7-17a49d9d3e85.jpeg" alt="" loading="lazy" decoding="async"/></div>
+      <div class="slide"><img src="pics/salon/salon-evenimente-2.jpg" alt="" loading="lazy" decoding="async"/></div>
+      <div class="slide"><img src="pics/salon/salon-evenimente.jpg" alt="" loading="lazy" decoding="async"/></div>
     </div>
     <button class="slider-btn prev" id="sliderPrev" aria-label="Previous">
       <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -1416,9 +1440,11 @@
 
 <!-- RSVP ─────────────────────────────────────────────────────── -->
 <section id="rsvp">
-  <span class="section-label reveal" data-i18n="rsvpLabel">Alătură-te nouă</span>
-  <h2 class="reveal" data-i18n="rsvpTitle">RSVP</h2>
-  <p class="subtitle reveal" data-i18n="rsvpSub">Vă rugăm să răspundeți până pe 1 Martie 2027</p>
+  <div id="rsvpHeader">
+    <span class="section-label reveal" data-i18n="rsvpLabel">Alătură-te nouă</span>
+    <h2 class="reveal" data-i18n="rsvpTitle">RSVP</h2>
+    <p class="subtitle reveal" data-i18n="rsvpSub">Vă rugăm să răspundeți până pe 1 Martie 2027</p>
+  </div>
 
   <form class="rsvp-form reveal" id="rsvpForm" novalidate>
 
@@ -1509,6 +1535,12 @@
     <h3 data-i18n="successTitle">Mulțumim din suflet!</h3>
     <p data-i18n="successText">Am primit răspunsul tău și abia așteptăm să sărbătorim împreună cu tine. Te vom contacta cu mai multe detalii aproape de data evenimentului.</p>
   </div>
+
+  <div class="form-error" id="formError">
+    <div class="big-icon">⚠️</div>
+    <h3 data-i18n="errorTitle">Ceva nu a mers bine</h3>
+    <p data-i18n="errorText">Răspunsul tău nu a putut fi trimis. Te rugăm să reîncerci reîncărcând pagina sau să ne contactezi direct.</p>
+  </div>
 </section>
 
 <!-- Footer ───────────────────────────────────────────────────── -->
@@ -1566,9 +1598,12 @@ const T = {
     accomN:     "Nu, mă descurc singur/ă",
     msgLbl:     "Un mesaj pentru noi 💌",
     msgPh:      "Scrie-ne urările tale aici…",
-    submitBtn:  "Trimite RSVP →",
+    submitBtn:    "Trimite RSVP →",
+    submittingBtn: "Se trimite...",
     successTitle: "Mulțumim din suflet!",
     successText:  "Am primit răspunsul tău și abia așteptăm să sărbătorim împreună cu tine. Te vom contacta cu mai multe detalii aproape de data evenimentului.",
+    errorTitle:   "Ceva nu a mers bine",
+    errorText:    "Răspunsul tău nu a putut fi trimis. Te rugăm să reîncerci reîncărcând pagina sau să ne contactezi direct.",
     locLabel:   "Locația",
     locDir:     "↗ mellya.ro/contact",
     locCap:     "60–100 invitați",
@@ -1627,9 +1662,12 @@ const T = {
     accomN:     "No, I have arranged my own",
     msgLbl:     "A note for the happy couple 💌",
     msgPh:      "Write your wishes here…",
-    submitBtn:  "Send my RSVP →",
+    submitBtn:    "Send my RSVP →",
+    submittingBtn: "Sending...",
     successTitle: "Thank you so much!",
     successText:  "We've received your RSVP and can't wait to celebrate with you. We'll be in touch with more details closer to the date.",
+    errorTitle:   "Something went wrong",
+    errorText:    "Your response couldn't be sent. Please refresh the page and try again, or reach out to us directly.",
     locLabel:   "Venue",
     locDir:     "↗ mellya.ro/contact",
     locCap:     "60–100 guests",
@@ -1828,23 +1866,24 @@ document.getElementById('rsvpForm').addEventListener('submit', async function (e
   if (!fn || !ln || !em || !at) { alert(T[lang].reqAlert); return; }
 
   const btn = this.querySelector('.submit-btn');
-  btn.disabled = true;
-  btn.textContent = '…';
+  btn.classList.add('loading');
+  btn.textContent = T[lang].submittingBtn;
 
   const payload = {
-    firstName:    fn,
-    lastName:     ln,
-    email:        em,
-    attendance:   at,
-    guests:       document.getElementById('gcVal').value,
-    dietary:      document.querySelector('input[name="dietary"]:checked')?.value || '',
-    dietaryText:  document.querySelector('input[name="dietaryText"]')?.value.trim() || '',
+    firstName:     fn,
+    lastName:      ln,
+    email:         em,
+    attendance:    at,
+    guests:        document.getElementById('gcVal').value,
+    dietary:       document.querySelector('input[name="dietary"]:checked')?.value || '',
+    dietaryText:   document.querySelector('input[name="dietaryText"]')?.value.trim() || '',
     accommodation: document.getElementById('accommodation')?.value || '',
-    message:      document.getElementById('message')?.value.trim() || '',
+    message:       document.getElementById('message')?.value.trim() || '',
     lang,
-    submittedAt:  new Date().toISOString(),
+    submittedAt:   new Date().toISOString(),
   };
 
+  let failed = false;
   try {
     await fetch(SCRIPT_URL, {
       method: 'POST',
@@ -1853,13 +1892,21 @@ document.getElementById('rsvpForm').addEventListener('submit', async function (e
       body: JSON.stringify(payload),
     });
   } catch (_) {
-    // no-cors responses are opaque — a network error still lands here
+    failed = true;
   }
 
+  document.getElementById('rsvpHeader').style.display = 'none';
   this.style.display = 'none';
-  const s = document.getElementById('formSuccess');
-  s.style.display = 'block';
-  s.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  if (failed) {
+    const err = document.getElementById('formError');
+    err.style.display = 'block';
+    err.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } else {
+    const s = document.getElementById('formSuccess');
+    s.style.display = 'block';
+    s.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 });
 
 /* ── Menu accordion ────────────────────────────────────────────── */
