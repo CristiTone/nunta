@@ -26,7 +26,7 @@
       --leaf-url: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M50 15 Q75 28 72 55 Q69 82 50 87 Q31 82 28 55 Q25 28 50 15Z' fill='none' stroke='%234d8558' stroke-width='1' opacity='0.15'/%3E%3Cpath d='M50 15 L50 87' fill='none' stroke='%234d8558' stroke-width='0.6' opacity='0.1'/%3E%3C/svg%3E");
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; background: var(--dark); }
 
     body {
       background: var(--bg);
@@ -112,9 +112,7 @@
     #hero-bg {
       position: absolute;
       inset: 0;
-      background: url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1600&auto=format&fit=crop') center/cover no-repeat;
-      transform: scale(1.06);
-      transition: transform 8s ease;
+      background: url('pics/salon/36db14ee-4976-445a-abbb-a7ebb53720e3.jpeg') center/cover no-repeat;
     }
     #hero-bg::after {
       content: '';
@@ -455,6 +453,7 @@
       width: 100%;
       transition: border-color .2s, background .2s;
     }
+    .field select { padding-left: .45rem; }
     .field input::placeholder,
     .field textarea::placeholder { color: rgba(255,255,255,.38); }
     .field input:focus,
@@ -490,11 +489,13 @@
     }
     .gc-btn:hover { background: rgba(255,255,255,.28); }
     .gc-count {
-      font-family: var(--ff-head);
-      font-size: 1.6rem;
+      font-family: var(--ff-body);
+      font-size: 1.3rem;
+      font-weight: 300;
       min-width: 2ch;
       text-align: center;
       color: var(--mint);
+      line-height: 1;
     }
 
     /* dietary radios */
@@ -710,38 +711,88 @@
       margin-bottom: 3rem;
     }
 
-    .menu-grid {
+    .menu-cols {
       position: relative;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 2.8rem;
-      max-width: 1100px;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 3rem;
+      max-width: 1000px;
       margin: 0 auto;
       text-align: left;
     }
 
-    .menu-cat { display: flex; flex-direction: column; gap: .4rem; }
-    .menu-cat-icon { font-size: 1.7rem; margin-bottom: .3rem; display: block; }
-    .menu-cat h3 {
+    .menu-col-header {
       font-family: var(--ff-head);
-      font-size: 1.25rem;
+      font-size: 1.4rem;
       color: var(--mint);
-      margin-bottom: .5rem;
+      letter-spacing: .06em;
+      padding-bottom: .7rem;
+      margin-bottom: .4rem;
+      border-bottom: 1px solid rgba(255,255,255,.18);
     }
-    .menu-items { list-style: none; display: flex; flex-direction: column; gap: .32rem; }
-    .menu-items li {
+
+    .accordion-item {
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .accordion-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,.88);
+      font-family: var(--ff-head);
+      font-size: 1.05rem;
+      padding: .8rem 0;
+      cursor: pointer;
+      text-align: left;
+      transition: color .2s;
+    }
+    .accordion-btn:hover { color: var(--mint); }
+    .accordion-item.open .accordion-btn { color: var(--mint); }
+
+    .accordion-icon { font-size: 1.1rem; flex-shrink: 0; }
+    .accordion-title { flex: 1; }
+
+    .accordion-arrow {
+      flex-shrink: 0;
+      opacity: .5;
+      transition: transform .3s cubic-bezier(.4,0,.2,1);
+    }
+    .accordion-item.open .accordion-arrow { transform: rotate(180deg); opacity: .9; }
+
+    .accordion-body {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height .38s cubic-bezier(.4,0,.2,1);
+    }
+
+    .accordion-body ul {
+      list-style: none;
+      padding: .1rem 0 1rem .3rem;
+      display: flex;
+      flex-direction: column;
+      gap: .32rem;
+    }
+    .accordion-body li {
       font-size: .875rem;
-      color: rgba(255,255,255,.8);
+      color: rgba(255,255,255,.75);
       padding-left: .9rem;
       position: relative;
       line-height: 1.55;
     }
-    .menu-items li::before {
+    .accordion-body li::before {
       content: '·';
       position: absolute;
       left: 0;
       color: var(--sage);
       font-weight: 700;
+    }
+
+    @media (max-width: 640px) {
+      .menu-cols { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 820px) {
@@ -786,6 +837,8 @@
       .cd-sep { display: none; }
       .slider-btn { width: 36px; height: 36px; }
     }
+
+    [hidden] { display: none !important; }
   </style>
 </head>
 <body>
@@ -874,11 +927,11 @@
 
   <div class="slider-wrap">
     <div class="slider-track" id="sliderTrack">
-      <div class="slide"><img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?w=1400&auto=format&fit=crop" alt="" loading="lazy"/></div>
-      <div class="slide"><img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=1400&auto=format&fit=crop" alt="" loading="lazy"/></div>
-      <div class="slide"><img src="https://images.unsplash.com/photo-1511285560929-80b456503681?w=1400&auto=format&fit=crop" alt="" loading="lazy"/></div>
-      <div class="slide"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=1400&auto=format&fit=crop" alt="" loading="lazy"/></div>
-      <div class="slide"><img src="https://images.unsplash.com/photo-1591604021695-0c69b7c05981?w=1400&auto=format&fit=crop" alt="" loading="lazy"/></div>
+      <div class="slide"><img src="pics/salon/36db14ee-4976-445a-abbb-a7ebb53720e3.jpeg" alt="" loading="lazy"/></div>
+      <div class="slide"><img src="pics/salon/916a4d38-bc4d-4c72-8fbf-351bb30644a5.jpeg" alt="" loading="lazy"/></div>
+      <div class="slide"><img src="pics/salon/ce3f4169-04b8-4be5-80d7-17a49d9d3e85.jpeg" alt="" loading="lazy"/></div>
+      <div class="slide"><img src="pics/salon/salon-evenimente-2.jpg" alt="" loading="lazy"/></div>
+      <div class="slide"><img src="pics/salon/salon-evenimente.jpg" alt="" loading="lazy"/></div>
     </div>
     <button class="slider-btn prev" id="sliderPrev" aria-label="Previous">
       <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -908,7 +961,7 @@
   <div class="story-grid">
     <div class="story-card reveal">
       <div class="story-card-img">
-        <img src="https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=600&auto=format&fit=crop" alt="" loading="lazy"/>
+        <img src="pics/salon/ce3f4169-04b8-4be5-80d7-17a49d9d3e85.jpeg" alt="" loading="lazy"/>
       </div>
       <div class="story-card-body">
         <div class="yr">2019</div>
@@ -918,7 +971,7 @@
     </div>
     <div class="story-card reveal">
       <div class="story-card-img">
-        <img src="https://images.unsplash.com/photo-1474552226712-ac0f0961a954?w=600&auto=format&fit=crop" alt="" loading="lazy"/>
+        <img src="pics/salon/salon-evenimente-2.jpg" alt="" loading="lazy"/>
       </div>
       <div class="story-card-body">
         <div class="yr">2020</div>
@@ -928,7 +981,7 @@
     </div>
     <div class="story-card reveal">
       <div class="story-card-img">
-        <img src="https://images.unsplash.com/photo-1538440516896-2da56e75e7e1?w=600&auto=format&fit=crop" alt="" loading="lazy"/>
+        <img src="pics/salon/916a4d38-bc4d-4c72-8fbf-351bb30644a5.jpeg" alt="" loading="lazy"/>
       </div>
       <div class="story-card-body">
         <div class="yr">2022</div>
@@ -938,12 +991,32 @@
     </div>
     <div class="story-card reveal">
       <div class="story-card-img">
-        <img src="https://images.unsplash.com/photo-1532673576284-e95d4e1f5562?w=600&auto=format&fit=crop" alt="" loading="lazy"/>
+        <img src="pics/salon/salon-evenimente.jpg" alt="" loading="lazy"/>
       </div>
       <div class="story-card-body">
         <div class="yr">2024</div>
         <h3 data-i18n="s4title">Cererea în căsătorie</h3>
         <p data-i18n="s4text">Cras mattis consectetur purus sit amet fermentum. Cras justo odio dapibus ac facilisis in, egestas eget quam. Morbi leo risus porta ac consectetur vestibulum.</p>
+      </div>
+    </div>
+    <div class="story-card reveal">
+      <div class="story-card-img">
+        <img src="pics/salon/36db14ee-4976-445a-abbb-a7ebb53720e3.jpeg" alt="" loading="lazy"/>
+      </div>
+      <div class="story-card-body">
+        <div class="yr">2025</div>
+        <h3 data-i18n="s5title">Împreună în lume</h3>
+        <p data-i18n="s5text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vehicula tortor at urna tincidunt, vel sodales nunc tincidunt. Quisque fringilla sapien vel libero fermentum.</p>
+      </div>
+    </div>
+    <div class="story-card reveal">
+      <div class="story-card-img">
+        <img src="pics/salon/ce3f4169-04b8-4be5-80d7-17a49d9d3e85.jpeg" alt="" loading="lazy"/>
+      </div>
+      <div class="story-card-body">
+        <div class="yr">2027</div>
+        <h3 data-i18n="s6title">Ziua cea mare</h3>
+        <p data-i18n="s6text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
       </div>
     </div>
   </div>
@@ -955,20 +1028,16 @@
   <!-- Venue photo mosaic -->
   <div class="venue-mosaic">
     <div class="vm vm-1">
-      <img src="https://reinaevents.ro/wp-content/uploads/2024/09/salonul-garden.jpg"
-           alt="Summer Garden — vedere generală" loading="lazy"/>
+      <img src="pics/salon/36db14ee-4976-445a-abbb-a7ebb53720e3.jpeg" alt="Mellya North — vedere generală" loading="lazy"/>
     </div>
     <div class="vm vm-2">
-      <img src="https://reinaevents.ro/wp-content/uploads/2022/04/gradina-de-vara_reina-events-ballroom_04.jpg"
-           alt="Summer Garden — detaliu" loading="lazy"/>
+      <img src="pics/salon/916a4d38-bc4d-4c72-8fbf-351bb30644a5.jpeg" alt="Mellya North — detaliu" loading="lazy"/>
     </div>
     <div class="vm vm-3">
-      <img src="https://reinaevents.ro/wp-content/uploads/2022/04/gradina-de-vara_reina-events-ballroom_01.jpg"
-           alt="Summer Garden — decor" loading="lazy"/>
+      <img src="pics/salon/salon-evenimente-2.jpg" alt="Mellya North — decor" loading="lazy"/>
     </div>
     <div class="vm vm-4">
-      <img src="https://reinaevents.ro/wp-content/uploads/2022/04/gradina-de-vara_reina-events-ballroom_02.jpg"
-           alt="Summer Garden — ambient" loading="lazy"/>
+      <img src="pics/salon/salon-evenimente.jpg" alt="Mellya North — ambient" loading="lazy"/>
     </div>
   </div>
 
@@ -976,28 +1045,28 @@
   <div class="loc-body">
     <div class="loc-details reveal">
       <span class="section-label" data-i18n="locLabel">Locația</span>
-      <div class="venue-name">Summer Garden</div>
-      <div class="venue-sub">Reina Events Ballroom</div>
+      <div class="venue-name">Mellya North</div>
+      <div class="venue-sub">Cartierul Francez, București</div>
       <address>
-        Strada Lt. Nicolae Pascu nr. 81<br/>
-        Sector 3, București, România
+        Str. Grigore Gafencu 27<br/>
+        Cartierul Francez, București, România
       </address>
-      <a href="https://www.google.com/maps/dir/?api=1&destination=Strada+Lt.+Nicolae+Pascu+81,+Sector+3,+Bucharest,+Romania"
+      <a href="https://mellya.ro/contact/"
          target="_blank" rel="noopener noreferrer"
          class="directions-btn" data-i18n="locDir">
-        ↗ Obține direcții
+        ↗ mellya.ro/contact
       </a>
       <div class="venue-feats">
         <div class="feat">👥 <span data-i18n="locCap">60–100 invitați</span></div>
         <div class="feat">🌿 <span data-i18n="locOut">Spațiu în aer liber</span></div>
         <div class="feat">🌙 <span data-i18n="locEve">Seară festivă</span></div>
-        <div class="feat">📍 <span data-i18n="locCity">București, Sector 3</span></div>
+        <div class="feat">📍 <span data-i18n="locCity">București</span></div>
       </div>
     </div>
     <div class="loc-map reveal">
       <iframe
-        src="https://maps.google.com/maps?q=Strada+Lt.+Nicolae+Pascu+81,+Sector+3,+Bucuresti,+Romania&output=embed"
-        title="Reina Events — Summer Garden"
+        src="https://maps.google.com/maps?q=Str.+Grigore+Gafencu+27,+Bucuresti,+Romania&output=embed"
+        title="Mellya North — Cartierul Francez, București"
         allowfullscreen
         loading="lazy">
       </iframe>
@@ -1010,120 +1079,348 @@
     <h2 class="reveal" data-i18n="menuTitle">Meniu</h2>
 
     <!-- Romanian menu -->
-    <div id="menuRo" class="menu-grid">
-      <div class="menu-cat reveal">
-        <span class="menu-cat-icon">🥂</span>
-        <h3>Cocktail &amp; Aperitiv</h3>
-        <ul class="menu-items">
-          <li>Cocteil de bun venit cu fructe de sezon</li>
-          <li>Platouri cu brânzeturi și mezeluri premium</li>
-          <li>Bruschette cu roșii și busuioc proaspăt</li>
-          <li>Ciupercuțe umplute cu brânză și verdețuri</li>
-          <li>Fursecuri cu prosciutto crudo</li>
-        </ul>
+    <div id="menuRo" class="menu-cols">
+      <!-- Food column -->
+      <div class="menu-col reveal">
+        <div class="menu-col-header">Mâncare</div>
+
+        <div class="accordion-item">
+          <button class="accordion-btn">
+            <span class="accordion-icon">🥗</span>
+            <span class="accordion-title">Gustare</span>
+            <svg class="accordion-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>Piept de rață afumat cu confit de portocală</li>
+              <li>Salată de caracatiță</li>
+              <li>Mozzarella di bufala cu roșie marinată, roșie uscată la soare și pesto verde</li>
+              <li>Terină de brânză de bivoliță cu mousse de sfeclă roșie și fulgi de migdale</li>
+              <li>Tartar de somon cu ou de prepeliță și icre roșii</li>
+              <li>Guacamole artizanal pe pat de andivă cu rodie</li>
+              <li>Bresaola maturată fin cu măslină verde</li>
+              <li>Mousse de Foie Gras cu ceapă caramelizată</li>
+              <li>Tapenadă de măsline pe toast crocant</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-btn">
+            <span class="accordion-icon">🐟</span>
+            <span class="accordion-title">Pește</span>
+            <svg class="accordion-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>File de somon cu orez cu șofran, edamame și sos cremos de homar cu lime și chives</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-btn">
+            <span class="accordion-icon">🍲</span>
+            <span class="accordion-title">Sarmale</span>
+            <svg class="accordion-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>Duet de sarmale în valuri de varză și viță de vie, mămăliguță cu unt, bacon crocant, smântână și ardei iute</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-btn">
+            <span class="accordion-icon">🥩</span>
+            <span class="accordion-title">Fel Principal</span>
+            <svg class="accordion-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>Specialitate de vită Mellya, servită cu piure de cartofi cu trufe și salată de rucola proaspătă cu roșii cherry și sos de piper verde</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-btn">
+            <span class="accordion-icon">🍬</span>
+            <span class="accordion-title">Candy Bar &amp; Fruit Bar</span>
+            <svg class="accordion-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>Candy Bar</li>
+              <li>Fruit Bar</li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div class="menu-cat reveal">
-        <span class="menu-cat-icon">🥗</span>
-        <h3>Antreuri</h3>
-        <ul class="menu-items">
-          <li>Carpaccio de vită cu rucola și parmezan</li>
-          <li>Cremă de avocado cu tartine de casă</li>
-          <li>Salată grecească cu brânză feta</li>
-          <li>Supă cremă de dovleac cu semințe prăjite</li>
-        </ul>
-      </div>
-      <div class="menu-cat reveal">
-        <span class="menu-cat-icon">🍽️</span>
-        <h3>Felul Principal</h3>
-        <ul class="menu-items">
-          <li>Ciorbă de văcuță cu tăiței de casă</li>
-          <li>Mușchiuleț de vită la cuptor cu sos de vin roșu</li>
-          <li>Pui umplut cu spanac și brânză de capră</li>
-          <li>Somon la grătar cu sos de lămâie și capere</li>
-          <li>Garnituri: piure trufat, legume gratinate, cartofi noi</li>
-        </ul>
-      </div>
-      <div class="menu-cat reveal">
-        <span class="menu-cat-icon">🎂</span>
-        <h3>Deserturi</h3>
-        <ul class="menu-items">
-          <li>Tortul mirilor — creat special pentru voi</li>
-          <li>Papanași cu dulceață de vișine și smântână</li>
-          <li>Mousse de ciocolată cu fructe de pădure</li>
-          <li>Macarons asortate</li>
-          <li>Candy bar cu dulciuri tradiționale</li>
-        </ul>
-      </div>
-      <div class="menu-cat reveal">
-        <span class="menu-cat-icon">🍷</span>
-        <h3>Băuturi — Open Bar</h3>
-        <ul class="menu-items">
-          <li>Vinuri albe și roșii din Podgoria Recaș</li>
-          <li>Prosecco și șampanie pentru toasturi</li>
-          <li>Bere artizanală și la draft</li>
-          <li>Cocktailuri clasice și signature</li>
-          <li>Sucuri naturale, apă plată și minerală</li>
-          <li>Cafea, ceaiuri și digestive</li>
-        </ul>
+
+      <!-- Drinks column -->
+      <div class="menu-col reveal">
+        <div class="menu-col-header">Băuturi</div>
+
+        <div class="accordion-item">
+          <button class="accordion-btn">
+            <span class="accordion-icon">🥃</span>
+            <span class="accordion-title">Spirtoase</span>
+            <svg class="accordion-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>Whisky Jack Daniel's</li>
+              <li>Vodka Absolut</li>
+              <li>Gin Beefeater</li>
+              <li>Rom Havana</li>
+              <li>Martini</li>
+              <li>Campari</li>
+              <li>Cremă de whisky Baileys</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-btn">
+            <span class="accordion-icon">🍹</span>
+            <span class="accordion-title">Cocktails</span>
+            <svg class="accordion-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>Cuba libre</li>
+              <li>Gin tonic</li>
+              <li>Campari orange</li>
+              <li>Screwdriver</li>
+              <li>Manhattan</li>
+              <li>Mimosa</li>
+              <li>Whisky cola</li>
+              <li>Vodka Tonic</li>
+              <li>Sweet sunrise (nonalcoolic)</li>
+              <li>Aperol Spritz</li>
+              <li>Hugo</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-btn">
+            <span class="accordion-icon">🍺</span>
+            <span class="accordion-title">Bere &amp; Vin</span>
+            <svg class="accordion-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>Bere cu și fără alcool — Carlsberg</li>
+              <li>Vin alb, rosé și roșu — Aniversarium</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-btn">
+            <span class="accordion-icon">🥤</span>
+            <span class="accordion-title">Soft Drinks</span>
+            <svg class="accordion-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>Apă minerală și plată</li>
+              <li>Sucuri naturale — portocală, cranberry, mere, piersică, grapefruit</li>
+              <li>Sucuri carbogazoase — gama Coca-Cola</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-btn">
+            <span class="accordion-icon">☕</span>
+            <span class="accordion-title">Cafea</span>
+            <svg class="accordion-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>Espresso</li>
+              <li>Cappuccino</li>
+              <li>Ceai</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- English menu (hidden by default) -->
-    <div id="menuEn" class="menu-grid" hidden>
-      <div class="menu-cat reveal">
-        <span class="menu-cat-icon">🥂</span>
-        <h3>Cocktail Hour</h3>
-        <ul class="menu-items">
-          <li>Welcome cocktail with seasonal fruits</li>
-          <li>Premium cheese &amp; charcuterie boards</li>
-          <li>Bruschetta with tomatoes and fresh basil</li>
-          <li>Cheese-stuffed mushrooms with herbs</li>
-          <li>Prosciutto crudo pastries</li>
-        </ul>
+    <div id="menuEn" class="menu-cols" hidden>
+      <!-- Food column -->
+      <div class="menu-col reveal">
+        <div class="menu-col-header">Food</div>
+
+        <div class="accordion-item">
+          <button class="accordion-btn">
+            <span class="accordion-icon">🥗</span>
+            <span class="accordion-title">Starters</span>
+            <svg class="accordion-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>Smoked duck breast with orange confit</li>
+              <li>Octopus salad</li>
+              <li>Buffalo mozzarella with marinated tomato, sun-dried tomato and green pesto</li>
+              <li>Buffalo cheese terrine with beetroot mousse and almond flakes</li>
+              <li>Salmon tartare with quail egg and salmon roe</li>
+              <li>Artisanal guacamole on endive with pomegranate</li>
+              <li>Fine-aged bresaola with green olives</li>
+              <li>Foie Gras mousse with caramelised onions</li>
+              <li>Olive tapenade on crispy toast</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-btn">
+            <span class="accordion-icon">🐟</span>
+            <span class="accordion-title">Fish</span>
+            <svg class="accordion-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>Salmon fillet with saffron rice, edamame and creamy lobster sauce with lime and chives</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-btn">
+            <span class="accordion-icon">🍲</span>
+            <span class="accordion-title">Sarmale</span>
+            <svg class="accordion-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>Duet of stuffed cabbage &amp; vine leaves with cornmeal porridge, butter, crispy bacon, sour cream and chili</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-btn">
+            <span class="accordion-icon">🥩</span>
+            <span class="accordion-title">Main Course</span>
+            <svg class="accordion-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>Mellya beef specialty served with truffle mash and fresh arugula salad with cherry tomatoes and green pepper sauce</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-btn">
+            <span class="accordion-icon">🍬</span>
+            <span class="accordion-title">Candy Bar &amp; Fruit Bar</span>
+            <svg class="accordion-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>Candy Bar</li>
+              <li>Fruit Bar</li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div class="menu-cat reveal">
-        <span class="menu-cat-icon">🥗</span>
-        <h3>Starters</h3>
-        <ul class="menu-items">
-          <li>Beef carpaccio with arugula and parmesan</li>
-          <li>Avocado cream with house-made crostini</li>
-          <li>Greek salad with feta cheese</li>
-          <li>Pumpkin cream soup with toasted seeds</li>
-        </ul>
-      </div>
-      <div class="menu-cat reveal">
-        <span class="menu-cat-icon">🍽️</span>
-        <h3>Main Course</h3>
-        <ul class="menu-items">
-          <li>Traditional beef broth with homemade noodles</li>
-          <li>Oven-roasted beef tenderloin with red wine sauce</li>
-          <li>Stuffed chicken with spinach and goat cheese</li>
-          <li>Grilled salmon with lemon and caper sauce</li>
-          <li>Sides: truffle mash, gratin vegetables, new potatoes</li>
-        </ul>
-      </div>
-      <div class="menu-cat reveal">
-        <span class="menu-cat-icon">🎂</span>
-        <h3>Desserts</h3>
-        <ul class="menu-items">
-          <li>Wedding cake — crafted just for you</li>
-          <li>Papanași (Romanian doughnuts) with sour cherry jam</li>
-          <li>Dark chocolate mousse with mixed berries</li>
-          <li>Assorted macarons</li>
-          <li>Candy bar with traditional sweets</li>
-        </ul>
-      </div>
-      <div class="menu-cat reveal">
-        <span class="menu-cat-icon">🍷</span>
-        <h3>Drinks — Open Bar</h3>
-        <ul class="menu-items">
-          <li>White &amp; red wines from Recaș Winery</li>
-          <li>Prosecco and champagne for toasts</li>
-          <li>Craft and draught beer</li>
-          <li>Classic and signature cocktails</li>
-          <li>Fresh juices, still and sparkling water</li>
-          <li>Coffee, teas and digestifs</li>
-        </ul>
+
+      <!-- Drinks column -->
+      <div class="menu-col reveal">
+        <div class="menu-col-header">Drinks</div>
+
+        <div class="accordion-item">
+          <button class="accordion-btn">
+            <span class="accordion-icon">🥃</span>
+            <span class="accordion-title">Spirits</span>
+            <svg class="accordion-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>Jack Daniel's Whisky</li>
+              <li>Absolut Vodka</li>
+              <li>Beefeater Gin</li>
+              <li>Havana Rum</li>
+              <li>Martini</li>
+              <li>Campari</li>
+              <li>Baileys Irish Cream</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-btn">
+            <span class="accordion-icon">🍹</span>
+            <span class="accordion-title">Cocktails</span>
+            <svg class="accordion-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>Cuba Libre</li>
+              <li>Gin Tonic</li>
+              <li>Campari Orange</li>
+              <li>Screwdriver</li>
+              <li>Manhattan</li>
+              <li>Mimosa</li>
+              <li>Whisky Cola</li>
+              <li>Vodka Tonic</li>
+              <li>Sweet Sunrise (non-alcoholic)</li>
+              <li>Aperol Spritz</li>
+              <li>Hugo</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-btn">
+            <span class="accordion-icon">🍺</span>
+            <span class="accordion-title">Beer &amp; Wine</span>
+            <svg class="accordion-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>Carlsberg with &amp; without alcohol</li>
+              <li>White, rosé &amp; red wine — Aniversarium</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-btn">
+            <span class="accordion-icon">🥤</span>
+            <span class="accordion-title">Soft Drinks</span>
+            <svg class="accordion-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>Still and sparkling water</li>
+              <li>Natural juices — orange, cranberry, apple, peach, grapefruit</li>
+              <li>Carbonated drinks — Coca-Cola range</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-btn">
+            <span class="accordion-icon">☕</span>
+            <span class="accordion-title">Coffee</span>
+            <svg class="accordion-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>Espresso</li>
+              <li>Cappuccino</li>
+              <li>Tea</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div><!-- /menu-wrap -->
@@ -1230,7 +1527,7 @@
 <!-- Footer ───────────────────────────────────────────────────── -->
 <footer>
   <div class="footer-names">Diana &amp; Cristi</div>
-  <p><span data-i18n="footDate">19 Iunie 2027</span> &nbsp;·&nbsp; <span data-i18n="footLoc">Cluj-Napoca, România</span></p>
+  <p><span data-i18n="footDate">19 Iunie 2027</span> &nbsp;·&nbsp; <span data-i18n="footLoc">București, România</span></p>
   <p style="margin-top:.8rem; font-size:.7rem;" data-i18n="footLove">Făcut cu dragoste ♥</p>
 </footer>
 
@@ -1255,6 +1552,10 @@ const T = {
     s3text:  "Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna vel scelerisque nisl. Donec sed odio dui, ullamcorper nulla non metus auctor fringilla.",
     s4title: "Cererea în căsătorie",
     s4text:  "Cras mattis consectetur purus sit amet fermentum. Cras justo odio dapibus ac facilisis in, egestas eget quam. Morbi leo risus porta ac consectetur vestibulum.",
+    s5title: "Împreună în lume",
+    s5text:  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vehicula tortor at urna tincidunt, vel sodales nunc tincidunt. Quisque fringilla sapien vel libero fermentum.",
+    s6title: "Ziua cea mare",
+    s6text:  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
     rsvpLabel:  "Alătură-te nouă",
     rsvpTitle:  "RSVP",
     rsvpSub:    "Vă rugăm să răspundeți până pe 1 Martie 2027",
@@ -1282,15 +1583,15 @@ const T = {
     successTitle: "Mulțumim din suflet!",
     successText:  "Am primit răspunsul tău și abia așteptăm să sărbătorim împreună cu tine. Te vom contacta cu mai multe detalii aproape de data evenimentului.",
     locLabel:   "Locația",
-    locDir:     "↗ Obține direcții",
+    locDir:     "↗ mellya.ro/contact",
     locCap:     "60–100 invitați",
     locOut:     "Spațiu în aer liber",
     locEve:     "Seară festivă",
-    locCity:    "București, Sector 3",
+    locCity:    "București",
     menuLabel:  "Răsfăț culinar",
     menuTitle:  "Meniu",
     footDate:   "19 Iunie 2027",
-    footLoc:    "Cluj-Napoca, România",
+    footLoc:    "București, România",
     footLove:   "Făcut cu dragoste ♥",
     reqAlert:   "Vă rugăm să completați toate câmpurile obligatorii.",
   },
@@ -1312,6 +1613,10 @@ const T = {
     s3text:  "Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna vel scelerisque nisl. Donec sed odio dui, ullamcorper nulla non metus auctor fringilla.",
     s4title: "The Proposal",
     s4text:  "Cras mattis consectetur purus sit amet fermentum. Cras justo odio dapibus ac facilisis in, egestas eget quam. Morbi leo risus porta ac consectetur vestibulum.",
+    s5title: "Together in the World",
+    s5text:  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vehicula tortor at urna tincidunt, vel sodales nunc tincidunt. Quisque fringilla sapien vel libero fermentum.",
+    s6title: "The Big Day",
+    s6text:  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
     rsvpLabel:  "Join us",
     rsvpTitle:  "RSVP",
     rsvpSub:    "Please reply by 1 March 2027",
@@ -1339,15 +1644,15 @@ const T = {
     successTitle: "Thank you so much!",
     successText:  "We've received your RSVP and can't wait to celebrate with you. We'll be in touch with more details closer to the date.",
     locLabel:   "Venue",
-    locDir:     "↗ Get Directions",
+    locDir:     "↗ mellya.ro/contact",
     locCap:     "60–100 guests",
     locOut:     "Outdoor space",
     locEve:     "Evening celebration",
-    locCity:    "Bucharest, Sector 3",
+    locCity:    "Bucharest",
     menuLabel:  "Food & Drinks",
     menuTitle:  "Menu",
     footDate:   "19 June 2027",
-    footLoc:    "Cluj-Napoca, Romania",
+    footLoc:    "Bucharest, Romania",
     footLove:   "Made with love ♥",
     reqAlert:   "Please fill in all required fields.",
   }
@@ -1540,6 +1845,17 @@ document.getElementById('rsvpForm').addEventListener('submit', function (e) {
   s.scrollIntoView({ behavior: 'smooth', block: 'center' });
 });
 
+/* ── Menu accordion ────────────────────────────────────────────── */
+document.querySelectorAll('.accordion-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.accordion-item');
+    const body = item.querySelector('.accordion-body');
+    const isOpen = item.classList.contains('open');
+    item.classList.toggle('open', !isOpen);
+    body.style.maxHeight = isOpen ? '0' : body.scrollHeight + 'px';
+  });
+});
+
 /* ── Scroll reveal ─────────────────────────────────────────────── */
 (function () {
   const io = new IntersectionObserver(
@@ -1551,14 +1867,6 @@ document.getElementById('rsvpForm').addEventListener('submit', function (e) {
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 })();
 
-/* ── Hero parallax ─────────────────────────────────────────────── */
-(function () {
-  const bg = document.getElementById('hero-bg');
-  window.addEventListener('scroll', () => {
-    bg.style.transform = `scale(1.05) translateY(${window.scrollY * 0.45}px)`;
-  }, { passive: true });
-  setTimeout(() => { bg.style.transform = 'scale(1) translateY(0)'; }, 80);
-})();
 </script>
 </body>
 </html>
