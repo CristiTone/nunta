@@ -647,6 +647,13 @@
 
     .loc-details { display: flex; flex-direction: column; gap: 1rem; }
 
+    .venue-intro {
+      font-size: .75rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--moss);
+    }
+
     .venue-name {
       font-family: var(--ff-head);
       font-size: 2.2rem;
@@ -1054,6 +1061,7 @@
   <div class="loc-body">
     <div class="loc-details reveal">
       <span class="section-label" data-i18n="locLabel">Locația</span>
+      <p class="venue-intro" data-i18n="locIntro">Vă așteptăm începând cu ora 18:00 la</p>
       <div class="venue-name">Mellya North</div>
       <div class="venue-sub">Cartierul Francez, București</div>
       <address>
@@ -1605,6 +1613,7 @@ const T = {
     errorTitle:   "Ceva nu a mers bine",
     errorText:    "Răspunsul tău nu a putut fi trimis. Te rugăm să reîncerci reîncărcând pagina sau să ne contactezi direct.",
     locLabel:   "Locația",
+    locIntro:   "Vă așteptăm începând cu ora 18:00 la",
     locDir:     "↗ mellya.ro/contact",
     locCap:     "Parcare proprie",
     locOut:     "Spațiu exclusiv",
@@ -1669,6 +1678,7 @@ const T = {
     errorTitle:   "Something went wrong",
     errorText:    "Your response couldn't be sent. Please refresh the page and try again, or reach out to us directly.",
     locLabel:   "Venue",
+    locIntro:   "We look forward to welcoming you from 18:00 at",
     locDir:     "↗ mellya.ro/contact",
     locCap:     "Private parking",
     locOut:     "Exclusive venue",
