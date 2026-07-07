@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script src="https://www.google.com/recaptcha/api.js?render=6LdrmEgtAAAAAHyvXol164OK-ppqgnsrtFCvNc6R"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -438,7 +438,6 @@
       overflow: hidden;
     }
 
-    .recaptcha-field { display: flex; justify-content: center; }
 
     .field-group {
       display: grid;
@@ -1556,10 +1555,6 @@
 
     </div><!-- /acceptFields -->
 
-    <div class="field recaptcha-field">
-      <div class="g-recaptcha" data-sitekey="6LdrmEgtAAAAAHyvXol164OK-ppqgnsrtFCvNc6R"></div>
-    </div>
-
     <button type="submit" class="submit-btn" data-i18n="submitBtn">Trimite RSVP →</button>
   </form>
 
@@ -1658,7 +1653,7 @@ const T = {
     footLoc:    "București, România",
     footLove:   "Făcut cu dragoste ♥",
     reqAlert:   "Vă rugăm să completați toate câmpurile obligatorii.",
-    captchaAlert: "Te rugăm să confirmi că nu ești un robot.",
+    captchaAlert: "Nu am putut finaliza verificarea de securitate. Te rugăm să reîncarci pagina și să încerci din nou.",
   },
   en: {
     dateChip:     "19 June 2027 · 18:00",
@@ -1726,7 +1721,7 @@ const T = {
     footLoc:    "Bucharest, Romania",
     footLove:   "Made with love ♥",
     reqAlert:   "Please fill in all required fields.",
-    captchaAlert: "Please confirm you're not a robot.",
+    captchaAlert: "We couldn't complete a security check. Please reload the page and try again.",
   }
 };
 
@@ -1923,6 +1918,20 @@ function whitelist(value, allowed, fallback) {
 
 /* ── RSVP submit ───────────────────────────────────────────────── */
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxOzxZ29pX5s_7_CJiXkMKlhlHy5I9WxGooZbwUzi0UtVoppk4ncjpB6rXnOw0gSQ3m/exec';
+const RECAPTCHA_SITE_KEY = '6LdrmEgtAAAAAHyvXol164OK-ppqgnsrtFCvNc6R';
+
+// reCAPTCHA v3 is invisible — there's no checkbox to read, a fresh token
+// has to be requested right before each submit.
+function getCaptchaToken() {
+  if (typeof grecaptcha === 'undefined') return Promise.resolve('');
+  return new Promise(resolve => {
+    grecaptcha.ready(() => {
+      grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'rsvp_submit' })
+        .then(resolve)
+        .catch(() => resolve(''));
+    });
+  });
+}
 
 document.getElementById('rsvpForm').addEventListener('submit', async function (e) {
   e.preventDefault();
@@ -1946,7 +1955,7 @@ document.getElementById('rsvpForm').addEventListener('submit', async function (e
   const at = whitelist(document.getElementById('attendance').value, ['yes', 'no'], '');
   if (!fn || !ln || !em || !at || !isValidEmail(em)) { alert(T[lang].reqAlert); return; }
 
-  const captchaToken = (typeof grecaptcha !== 'undefined') ? grecaptcha.getResponse() : '';
+  const captchaToken = await getCaptchaToken();
   if (!captchaToken) { alert(T[lang].captchaAlert); return; }
 
   const btn = this.querySelector('.submit-btn');
@@ -1992,8 +2001,6 @@ document.getElementById('rsvpForm').addEventListener('submit', async function (e
   } catch (_) {
     failed = true;
   }
-
-  if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
 
   document.getElementById('rsvpHeader').style.display = 'none';
   this.style.display = 'none';
