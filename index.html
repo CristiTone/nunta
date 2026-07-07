@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -424,6 +425,20 @@
       gap: 1.4rem;
       text-align: left;
     }
+
+    /* honeypot — hidden from sighted users and screen readers, but present
+       in the DOM/tab order-free so simple bots that auto-fill every field
+       trip it */
+    .hp-field {
+      position: absolute;
+      left: -9999px;
+      top: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    .recaptcha-field { display: flex; justify-content: center; }
 
     .field-group {
       display: grid;
@@ -1456,6 +1471,12 @@
 
   <form class="rsvp-form reveal" id="rsvpForm" novalidate>
 
+    <!-- Honeypot: hidden from real visitors, bots tend to fill every field -->
+    <div class="hp-field" aria-hidden="true">
+      <label for="website">Nu completa acest câmp / Leave this field blank</label>
+      <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+    </div>
+
     <div class="field-group">
       <div class="field">
         <label for="firstName" data-i18n="fNameLbl">Prenume *</label>
@@ -1535,6 +1556,10 @@
 
     </div><!-- /acceptFields -->
 
+    <div class="field recaptcha-field">
+      <div class="g-recaptcha" data-sitekey="6LdrmEgtAAAAAHyvXol164OK-ppqgnsrtFCvNc6R"></div>
+    </div>
+
     <button type="submit" class="submit-btn" data-i18n="submitBtn">Trimite RSVP →</button>
   </form>
 
@@ -1542,6 +1567,12 @@
     <div class="big-icon">💌</div>
     <h3 data-i18n="successTitle">Mulțumim din suflet!</h3>
     <p data-i18n="successText">Am primit răspunsul tău și abia așteptăm să sărbătorim împreună cu tine. Te vom contacta cu mai multe detalii aproape de data evenimentului.</p>
+  </div>
+
+  <div class="form-success" id="formDecline">
+    <div class="big-icon">💐</div>
+    <h3 data-i18n="declineTitle">Ne pare rău că nu poți fi alături de noi</h3>
+    <p data-i18n="declineText">Mulțumim că ne-ai anunțat. O să ne fie dor de tine, dar înțelegem — te avem cu drag în gânduri de ziua nunții.</p>
   </div>
 
   <div class="form-error" id="formError">
@@ -1610,6 +1641,8 @@ const T = {
     submittingBtn: "Se trimite...",
     successTitle: "Mulțumim din suflet!",
     successText:  "Am primit răspunsul tău și abia așteptăm să sărbătorim împreună cu tine. Te vom contacta cu mai multe detalii aproape de data evenimentului.",
+    declineTitle: "Ne pare rău că nu poți fi alături de noi",
+    declineText:  "Mulțumim că ne-ai anunțat. O să ne fie dor de tine, dar înțelegem — te avem cu drag în gânduri de ziua nunții.",
     errorTitle:   "Ceva nu a mers bine",
     errorText:    "Răspunsul tău nu a putut fi trimis. Te rugăm să reîncerci reîncărcând pagina sau să ne contactezi direct.",
     locLabel:   "Locația",
@@ -1625,6 +1658,7 @@ const T = {
     footLoc:    "București, România",
     footLove:   "Făcut cu dragoste ♥",
     reqAlert:   "Vă rugăm să completați toate câmpurile obligatorii.",
+    captchaAlert: "Te rugăm să confirmi că nu ești un robot.",
   },
   en: {
     dateChip:     "19 June 2027 · 18:00",
@@ -1675,6 +1709,8 @@ const T = {
     submittingBtn: "Sending...",
     successTitle: "Thank you so much!",
     successText:  "We've received your RSVP and can't wait to celebrate with you. We'll be in touch with more details closer to the date.",
+    declineTitle: "We're sorry you can't join us",
+    declineText:  "Thank you for letting us know. We'll miss you, but we understand — you'll be in our thoughts on the big day.",
     errorTitle:   "Something went wrong",
     errorText:    "Your response couldn't be sent. Please refresh the page and try again, or reach out to us directly.",
     locLabel:   "Venue",
@@ -1690,6 +1726,7 @@ const T = {
     footLoc:    "Bucharest, Romania",
     footLove:   "Made with love ♥",
     reqAlert:   "Please fill in all required fields.",
+    captchaAlert: "Please confirm you're not a robot.",
   }
 };
 
@@ -1864,33 +1901,84 @@ document.querySelectorAll('input[name="dietary"]').forEach(r => {
   });
 });
 
+/* ── Input sanitization helpers ───────────────────────────────────
+   The Apps Script backend receives raw JSON, so untrusted input is
+   cleaned here before it ever leaves the browser: strip any HTML/script
+   tags, trim, cap length, and constrain enum-like fields to a whitelist. */
+function stripHtml(str) {
+  return String(str ?? '').replace(/<[^>]*>/g, '');
+}
+function sanitizeLine(str, maxLen) {
+  return stripHtml(str).replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, maxLen);
+}
+function sanitizeMultiline(str, maxLen) {
+  return stripHtml(str).trim().slice(0, maxLen);
+}
+function isValidEmail(str) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str);
+}
+function whitelist(value, allowed, fallback) {
+  return allowed.includes(value) ? value : fallback;
+}
+
 /* ── RSVP submit ───────────────────────────────────────────────── */
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxOzxZ29pX5s_7_CJiXkMKlhlHy5I9WxGooZbwUzi0UtVoppk4ncjpB6rXnOw0gSQ3m/exec';
 
 document.getElementById('rsvpForm').addEventListener('submit', async function (e) {
   e.preventDefault();
-  const fn = document.getElementById('firstName').value.trim();
-  const ln = document.getElementById('lastName').value.trim();
-  const em = document.getElementById('email').value.trim();
-  const at = document.getElementById('attendance').value;
-  if (!fn || !ln || !em || !at) { alert(T[lang].reqAlert); return; }
+
+  // Honeypot: real visitors never see or fill this field. If it has a
+  // value, silently "succeed" without sending anything, so bots don't
+  // learn to look for a different tell.
+  const honeypot = document.getElementById('website').value.trim();
+  if (honeypot) {
+    document.getElementById('rsvpHeader').style.display = 'none';
+    this.style.display = 'none';
+    const s = document.getElementById('formSuccess');
+    s.style.display = 'block';
+    s.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  const fn = sanitizeLine(document.getElementById('firstName').value, 80);
+  const ln = sanitizeLine(document.getElementById('lastName').value, 80);
+  const em = sanitizeLine(document.getElementById('email').value, 120).toLowerCase();
+  const at = whitelist(document.getElementById('attendance').value, ['yes', 'no'], '');
+  if (!fn || !ln || !em || !at || !isValidEmail(em)) { alert(T[lang].reqAlert); return; }
+
+  const captchaToken = (typeof grecaptcha !== 'undefined') ? grecaptcha.getResponse() : '';
+  if (!captchaToken) { alert(T[lang].captchaAlert); return; }
 
   const btn = this.querySelector('.submit-btn');
   btn.classList.add('loading');
   btn.textContent = T[lang].submittingBtn;
+
+  let guests = parseInt(document.getElementById('gcVal').value, 10);
+  if (!Number.isInteger(guests)) guests = 1;
+  guests = Math.min(10, Math.max(1, guests));
+
+  const dietary = whitelist(
+    document.querySelector('input[name="dietary"]:checked')?.value || 'no',
+    ['yes', 'no'], 'no'
+  );
+  const accommodation = whitelist(
+    document.getElementById('accommodation')?.value || '',
+    ['', 'single', 'double', 'family', 'none'], ''
+  );
 
   const payload = {
     firstName:     fn,
     lastName:      ln,
     email:         em,
     attendance:    at,
-    guests:        document.getElementById('gcVal').value,
-    dietary:       document.querySelector('input[name="dietary"]:checked')?.value || '',
-    dietaryText:   document.querySelector('input[name="dietaryText"]')?.value.trim() || '',
-    accommodation: document.getElementById('accommodation')?.value || '',
-    message:       document.getElementById('message')?.value.trim() || '',
-    lang,
+    guests,
+    dietary,
+    dietaryText:   sanitizeLine(document.querySelector('input[name="dietaryText"]')?.value, 200),
+    accommodation,
+    message:       sanitizeMultiline(document.getElementById('message')?.value, 1000),
+    lang:          whitelist(lang, ['ro', 'en'], 'ro'),
     submittedAt:   new Date().toISOString(),
+    captchaToken,
   };
 
   let failed = false;
@@ -1905,6 +1993,8 @@ document.getElementById('rsvpForm').addEventListener('submit', async function (e
     failed = true;
   }
 
+  if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
+
   document.getElementById('rsvpHeader').style.display = 'none';
   this.style.display = 'none';
 
@@ -1913,7 +2003,7 @@ document.getElementById('rsvpForm').addEventListener('submit', async function (e
     err.style.display = 'block';
     err.scrollIntoView({ behavior: 'smooth', block: 'center' });
   } else {
-    const s = document.getElementById('formSuccess');
+    const s = document.getElementById(at === 'no' ? 'formDecline' : 'formSuccess');
     s.style.display = 'block';
     s.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
