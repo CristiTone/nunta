@@ -1286,6 +1286,40 @@
     [hidden] {
       display: none !important;
     }
+    /* Floral divider */
+.section-divider {
+  position: relative;
+  z-index: 5;
+  height: 90px;
+  margin-top: -45px;
+  margin-bottom: -45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.section-divider img {
+  display: block;
+  width: min(420px, 62vw);
+  height: auto;
+  max-height: 130px;
+  object-fit: contain;
+}
+
+/* Pe telefon */
+@media (max-width: 600px) {
+  .section-divider {
+    height: 70px;
+    margin-top: -35px;
+    margin-bottom: -35px;
+  }
+
+  .section-divider img {
+    width: min(290px, 72vw);
+    max-height: 100px;
+  }
+}
   </style>
 </head>
 
@@ -1422,6 +1456,10 @@
     </div>
   </section>
 
+  <div class="section-divider" aria-hidden="true">
+  <img src="pics/divider.png" alt="" />
+</div>
+  
   <!-- Story ────────────────────────────────────────────────────── -->
   <section id="story">
     <span class="section-label reveal" data-i18n="storyLabel">Cum a început totul</span>
