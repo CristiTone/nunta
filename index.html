@@ -2291,7 +2291,7 @@
 
     /* ── Countdown ─────────────────────────────────────────────────── */
     (function () {
-      const target = new Date('2027-06-19T18:00:00');
+      const target = new Date('2027-06-19T18:00:00+03:00');
       const p = (n, w = 2) => String(n).padStart(w, '0');
       function tick() {
         const d = target - Date.now();
