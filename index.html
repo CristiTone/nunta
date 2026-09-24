@@ -2420,20 +2420,32 @@
 
     /* ── RSVP submit ───────────────────────────────────────────────── */
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxOzxZ29pX5s_7_CJiXkMKlhlHy5I9WxGooZbwUzi0UtVoppk4ncjpB6rXnOw0gSQ3m/exec';
+    const formRenderedAt = Date.now();
+
+    function showSilentSuccess(form) {
+      document.getElementById('rsvpHeader').style.display = 'none';
+      form.style.display = 'none';
+      const s = document.getElementById('formSuccess');
+      s.style.display = 'block';
+      s.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
 
     document.getElementById('rsvpForm').addEventListener('submit', async function (e) {
       e.preventDefault();
+
+      const btn = this.querySelector('.submit-btn');
+      if (btn.disabled) return; // already submitting — ignore double-clicks/duplicate events
+      btn.disabled = true;
 
       // Honeypot: real visitors never see or fill this field. If it has a
       // value, silently "succeed" without sending anything, so bots don't
       // learn to look for a different tell.
       const honeypot = document.getElementById('website').value.trim();
-      if (honeypot) {
-        document.getElementById('rsvpHeader').style.display = 'none';
-        this.style.display = 'none';
-        const s = document.getElementById('formSuccess');
-        s.style.display = 'block';
-        s.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Scripted bots that fill and submit the form near-instantly (no
+      // rendering/reading delay) get the same silent no-op treatment.
+      const submittedTooFast = (Date.now() - formRenderedAt) < 1500;
+      if (honeypot || submittedTooFast) {
+        showSilentSuccess(this);
         return;
       }
 
@@ -2441,9 +2453,12 @@
       const ln = sanitizeLine(document.getElementById('lastName').value, 80);
       const em = sanitizeLine(document.getElementById('email').value, 120).toLowerCase();
       const at = whitelist(document.getElementById('attendance').value, ['yes', 'no'], '');
-      if (!fn || !ln || !em || !at || !isValidEmail(em)) { alert(T[lang].reqAlert); return; }
+      if (!fn || !ln || !em || !at || !isValidEmail(em)) {
+        alert(T[lang].reqAlert);
+        btn.disabled = false;
+        return;
+      }
 
-      const btn = this.querySelector('.submit-btn');
       btn.classList.add('loading');
       btn.textContent = T[lang].submittingBtn;
 
